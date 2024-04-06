@@ -53,3 +53,7 @@ build/
 *.zip
 *.tar.gz
 *.rar
+
+#HSQLDB
+src/main/resources/database/myDb.tmp
+src/main/resources/database/myDb.lck
