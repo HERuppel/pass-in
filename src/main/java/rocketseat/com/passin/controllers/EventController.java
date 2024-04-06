@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.RequiredArgsConstructor;
+import rocketseat.com.passin.dto.attendee.AttendeesResponseDTO;
 import rocketseat.com.passin.dto.event.EventIdDTO;
 import rocketseat.com.passin.dto.event.EventRequestDTO;
 import rocketseat.com.passin.dto.event.EventResponseDTO;
+import rocketseat.com.passin.services.AttendeeService;
 import rocketseat.com.passin.services.EventService;
 
 @RestController
@@ -20,6 +22,7 @@ import rocketseat.com.passin.services.EventService;
 @RequiredArgsConstructor
 public class EventController {
     private final EventService eventService;
+    private final AttendeeService attendeeService;
 
     @GetMapping("/{id}")
     public ResponseEntity<EventResponseDTO> getEvents(@PathVariable String id) {
@@ -34,5 +37,12 @@ public class EventController {
       var uri = uriComponentsBuilder.path("/events/{id}").buildAndExpand(eventIdDTO.eventId()).toUri();
 
       return ResponseEntity.created(uri).body(eventIdDTO);
+    }
+
+    @GetMapping("/attendees/{id}")
+    public ResponseEntity<AttendeesResponseDTO> getEventAttendees(@PathVariable String id) {
+      AttendeesResponseDTO attendees = this.attendeeService.getEventsAttendee(id);
+
+      return ResponseEntity.ok(attendees);
     }
 }
