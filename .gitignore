@@ -57,3 +57,5 @@ build/
 #HSQLDB
 src/main/resources/database/myDb.tmp
 src/main/resources/database/myDb.lck
+src/main/resources/database/myDb.properties
+src/main/resources/database/myDb.script
