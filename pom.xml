@@ -67,6 +67,16 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>7.0.0</version>
+				<configuration>
+						<url>jdbc:hsqldb:file:src/main/resources/database/myDb</url>
+						<user>sa</user>
+						<password></password>
+				</configuration>
+		</plugin>
 		</plugins>
 	</build>
 
