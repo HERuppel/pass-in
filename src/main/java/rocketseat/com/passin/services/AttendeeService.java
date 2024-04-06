@@ -17,8 +17,8 @@ import rocketseat.com.passin.repositories.CheckInRepository;
 @Service
 @RequiredArgsConstructor
 public class AttendeeService {
-  private AttendeeRepository attendeeRepository;
-  private CheckInRepository checkInRepository;
+  private final AttendeeRepository attendeeRepository;
+  private final CheckInRepository checkInRepository;
 
   public List<Attendee> getAllAttendeesFromEvent(String eventId) {
     return this.attendeeRepository.findByEventId(eventId);
