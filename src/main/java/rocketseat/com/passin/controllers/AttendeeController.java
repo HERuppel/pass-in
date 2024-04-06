@@ -10,6 +10,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.dto.attendee.AttendeeBadgeResponseDTO;
 import rocketseat.com.passin.services.AttendeeService;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 @RestController
 @RequestMapping("/attendees")
@@ -22,5 +24,14 @@ public class AttendeeController {
         AttendeeBadgeResponseDTO attendeeBadgeResponse = this.attendeeService.getAttendeeBadge(attendeeId, uriComponentsBuilder);
 
         return ResponseEntity.ok(attendeeBadgeResponse);
+    }
+
+    @PostMapping("/{attendeeId}/check-in")
+    public ResponseEntity registerCheckIn(@PathVariable String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
+        this.attendeeService.checkInAttendee(attendeeId);
+
+        var uri = uriComponentsBuilder.path("/attendeees/{attendeeId}/badge").buildAndExpand(attendeeId).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }
