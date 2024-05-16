@@ -25,7 +25,7 @@ import rocketseat.com.passin.domain.attendee.Attendee;
 public class CheckIn {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "created_at")
