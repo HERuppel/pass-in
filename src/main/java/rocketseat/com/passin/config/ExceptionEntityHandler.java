@@ -1,6 +1,7 @@
 package rocketseat.com.passin.config;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +16,7 @@ import rocketseat.com.passin.dto.general.ErrorResponseDTO;
 @ControllerAdvice
 public class ExceptionEntityHandler {
   @ExceptionHandler(EventNotFoundException.class)
-  public ResponseEntity handleEventNotFound(EventNotFoundException exception) {
+  public ResponseEntity<HttpStatusCode> handleEventNotFound(EventNotFoundException exception) {
     return ResponseEntity.notFound().build();
   }
 
@@ -25,17 +26,17 @@ public class ExceptionEntityHandler {
   }
 
   @ExceptionHandler(AttendeeNotFoundException.class)
-  public ResponseEntity handleAttendeeNotFound(AttendeeNotFoundException exception) {
+  public ResponseEntity<HttpStatusCode> handleAttendeeNotFound(AttendeeNotFoundException exception) {
     return ResponseEntity.notFound().build();
   }
 
   @ExceptionHandler(AttendeeAlreadyRegistered.class)
-  public ResponseEntity handleAttendeeAlreadyExists(AttendeeAlreadyRegistered exception) {
+  public ResponseEntity<HttpStatusCode> handleAttendeeAlreadyExists(AttendeeAlreadyRegistered exception) {
     return ResponseEntity.status(HttpStatus.CONFLICT).build();
   }
 
   @ExceptionHandler(CheckInAlreadyExistsException.class)
-  public ResponseEntity handleCheckInAlreadyExists(CheckInAlreadyExistsException exception) {
+  public ResponseEntity<HttpStatusCode> handleCheckInAlreadyExists(CheckInAlreadyExistsException exception) {
     return ResponseEntity.status(HttpStatus.CONFLICT).build();
   }
 }
