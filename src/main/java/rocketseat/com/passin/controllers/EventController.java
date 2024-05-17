@@ -23,38 +23,41 @@ import rocketseat.com.passin.services.EventService;
 @RequestMapping("/events")
 @RequiredArgsConstructor
 public class EventController {
-    private final EventService eventService;
-    private final AttendeeService attendeeService;
+  private final EventService eventService;
+  private final AttendeeService attendeeService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EventResponseDTO> getEvents(@PathVariable String id) {
-      EventResponseDTO eventDetails = this.eventService.getEventDetails(id);
-      return ResponseEntity.ok(eventDetails);
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<EventResponseDTO> getEvents(@PathVariable String id) {
+    EventResponseDTO eventDetails = this.eventService.getEventDetails(id);
+    return ResponseEntity.ok(eventDetails);
+  }
 
-    @PostMapping
-    public ResponseEntity<EventIdDTO> createEvent(@RequestBody EventRequestDTO body, UriComponentsBuilder uriComponentsBuilder) {
-      EventIdDTO eventIdDTO = this.eventService.createEvent(body);
+  @PostMapping
+  public ResponseEntity<EventIdDTO> createEvent(@RequestBody EventRequestDTO body,
+      UriComponentsBuilder uriComponentsBuilder) {
+    EventIdDTO eventIdDTO = this.eventService.createEvent(body);
 
-      var uri = uriComponentsBuilder.path("/events/{id}").buildAndExpand(eventIdDTO.eventId()).toUri();
+    var uri = uriComponentsBuilder.path("/events/{id}").buildAndExpand(eventIdDTO.eventId()).toUri();
 
-      return ResponseEntity.created(uri).body(eventIdDTO);
-    }
+    return ResponseEntity.created(uri).body(eventIdDTO);
+  }
 
-    @GetMapping("/attendees/{id}")
-    public ResponseEntity<AttendeesResponseDTO> getEventAttendees(@PathVariable String id) {
-      AttendeesResponseDTO attendees = this.attendeeService.getEventsAttendee(id);
+  @GetMapping("/attendees/{id}")
+  public ResponseEntity<AttendeesResponseDTO> getEventAttendees(@PathVariable String id) {
+    AttendeesResponseDTO attendees = this.attendeeService.getEventsAttendee(id);
 
-      return ResponseEntity.ok(attendees);
-    }
+    return ResponseEntity.ok(attendees);
+  }
 
-    @PostMapping("/{eventId}/attendees")
-    public ResponseEntity<AttendeeIdDTO> registerParticipant(@PathVariable String eventId, @RequestBody AttendeeRequestDTO attendeeRequest, UriComponentsBuilder uriComponentsBuilder) {
-      AttendeeIdDTO attendeeId = this.eventService.registerAttendeeOnEvent(eventId, attendeeRequest);
-        
-      var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/badge").buildAndExpand(attendeeId.attendeeId()).toUri();
+  @PostMapping("/{eventId}/attendees")
+  public ResponseEntity<AttendeeIdDTO> registerParticipant(@PathVariable String eventId,
+      @RequestBody AttendeeRequestDTO attendeeRequest, UriComponentsBuilder uriComponentsBuilder) {
+    AttendeeIdDTO attendeeId = this.eventService.registerAttendeeOnEvent(eventId, attendeeRequest);
 
-      return ResponseEntity.created(uri).body(attendeeId);
-    }
-    
+    var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/badge").buildAndExpand(attendeeId.attendeeId())
+        .toUri();
+
+    return ResponseEntity.created(uri).body(attendeeId);
+  }
+
 }

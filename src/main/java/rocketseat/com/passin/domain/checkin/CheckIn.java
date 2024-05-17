@@ -23,15 +23,15 @@ import rocketseat.com.passin.domain.attendee.Attendee;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CheckIn {
-    @Id
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+  @Id
+  @Column(nullable = false)
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
-    @OneToOne
-    @JoinColumn(name = "attendee_id", nullable = false)
-    private Attendee attendee;
+  @OneToOne
+  @JoinColumn(name = "attendee_id", nullable = false)
+  private Attendee attendee;
 }

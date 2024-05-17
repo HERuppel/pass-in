@@ -9,12 +9,11 @@ public class EventResponseDTO {
 
   public EventResponseDTO(Event event, Integer numberOfAttendees) {
     this.event = new EventDetailDTO(
-      event.getId(), 
-      event.getTitle(), 
-      event.getDetails(), 
-      event.getSlug(), 
-      event.getMaximumAttendees(),
-      numberOfAttendees
-    );
+        event.getId(),
+        event.getTitle(),
+        event.getDetails(),
+        event.getSlug(),
+        event.getMaximumAttendees(),
+        numberOfAttendees);
   }
 }

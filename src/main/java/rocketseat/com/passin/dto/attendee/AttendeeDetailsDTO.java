@@ -2,6 +2,4 @@ package rocketseat.com.passin.dto.attendee;
 
 import java.time.LocalDateTime;
 
-public record AttendeeDetailsDTO(String id, String name, String email, LocalDateTime createAt, LocalDateTime checkedInAt) {
-  
-}
+public record AttendeeDetailsDTO(String id, String name, String email, LocalDateTime createAt, LocalDateTime checkedInAt) {}

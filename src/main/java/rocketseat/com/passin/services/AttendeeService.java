@@ -36,7 +36,8 @@ public class AttendeeService {
 
       LocalDateTime checkedInAt = checkIn.isPresent() ? checkIn.get().getCreatedAt() : null;
 
-      return new AttendeeDetailsDTO(attendee.getId(), attendee.getName(), attendee.getEmail(), attendee.getCreatedAt(), checkedInAt);
+      return new AttendeeDetailsDTO(attendee.getId(), attendee.getName(), attendee.getEmail(), attendee.getCreatedAt(),
+          checkedInAt);
     }).toList();
 
     return new AttendeesResponseDTO(attendeeDetails);
@@ -45,7 +46,8 @@ public class AttendeeService {
   public void verifyAttendeeSubscription(String eventId, String email) {
     Optional<Attendee> isAttendeeRegistered = this.attendeeRepository.findByEventIdAndEmail(eventId, email);
 
-    if (isAttendeeRegistered.isPresent()) throw new AttendeeAlreadyRegistered("Attendee is already registered");
+    if (isAttendeeRegistered.isPresent())
+      throw new AttendeeAlreadyRegistered("Attendee is already registered");
 
   }
 
@@ -58,9 +60,11 @@ public class AttendeeService {
   public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
     Attendee attendee = this.getAttendee(attendeeId);
 
-    var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/check-in").buildAndExpand(attendeeId).toUri().toString();
+    var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/check-in").buildAndExpand(attendeeId).toUri()
+        .toString();
 
-    AttendeeBadgeDTO badge = new AttendeeBadgeDTO(attendee.getName(), attendee.getEmail(), uri, attendee.getEvent().getId());
+    AttendeeBadgeDTO badge = new AttendeeBadgeDTO(attendee.getName(), attendee.getEmail(), uri,
+        attendee.getEvent().getId());
     return new AttendeeBadgeResponseDTO(badge);
   }
 
@@ -69,9 +73,9 @@ public class AttendeeService {
 
     this.checkInService.registerCheckIn(attendee);
   }
-  
+
   private Attendee getAttendee(String attendeeId) {
     return this.attendeeRepository.findById(attendeeId)
-      .orElseThrow(() -> new AttendeeNotFoundException("Attendee not found with ID: " + attendeeId));
+        .orElseThrow(() -> new AttendeeNotFoundException("Attendee not found with ID: " + attendeeId));
   }
 }

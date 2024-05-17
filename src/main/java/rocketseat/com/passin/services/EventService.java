@@ -21,61 +21,62 @@ import rocketseat.com.passin.repositories.EventRepository;
 @Service
 @RequiredArgsConstructor
 public class EventService {
-    private final EventRepository eventRepository;
-    private final AttendeeService attendeeService;
-    
-    public EventResponseDTO getEventDetails(String eventId) {
-      Event event = this.getEventById(eventId);
-      
-      List<Attendee> attendees = this.attendeeService.getAllAttendeesFromEvent(eventId);
+  private final EventRepository eventRepository;
+  private final AttendeeService attendeeService;
 
-      return new EventResponseDTO(event, attendees.size());
-    }
+  public EventResponseDTO getEventDetails(String eventId) {
+    Event event = this.getEventById(eventId);
 
-    public EventIdDTO createEvent(EventRequestDTO eventRequest) {
-      Event newEvent = new Event();
-      newEvent.setTitle(eventRequest.title());
-      newEvent.setDetails(eventRequest.details());
-      newEvent.setMaximumAttendees(eventRequest.maximumAttendees());
-      newEvent.setSlug(createSlug(eventRequest.title()));
+    List<Attendee> attendees = this.attendeeService.getAllAttendeesFromEvent(eventId);
 
-      this.eventRepository.save(newEvent);
+    return new EventResponseDTO(event, attendees.size());
+  }
 
-      return new EventIdDTO(newEvent.getId());
-    }
+  public EventIdDTO createEvent(EventRequestDTO eventRequest) {
+    Event newEvent = new Event();
+    newEvent.setTitle(eventRequest.title());
+    newEvent.setDetails(eventRequest.details());
+    newEvent.setMaximumAttendees(eventRequest.maximumAttendees());
+    newEvent.setSlug(createSlug(eventRequest.title()));
 
-    public AttendeeIdDTO registerAttendeeOnEvent(String eventId, AttendeeRequestDTO attendeeRequest) {
-      this.attendeeService.verifyAttendeeSubscription(eventId, attendeeRequest.email());
+    this.eventRepository.save(newEvent);
 
-      Event event = this.getEventById(eventId);
-    
-     List<Attendee> attendees = this.attendeeService.getAllAttendeesFromEvent(eventId);
+    return new EventIdDTO(newEvent.getId());
+  }
 
-     if (event.getMaximumAttendees() <= attendees.size()) throw new EventFullException("Event is full!");
+  public AttendeeIdDTO registerAttendeeOnEvent(String eventId, AttendeeRequestDTO attendeeRequest) {
+    this.attendeeService.verifyAttendeeSubscription(eventId, attendeeRequest.email());
 
-     Attendee newAttendee = new Attendee();
+    Event event = this.getEventById(eventId);
 
-     newAttendee.setName(attendeeRequest.name());
-     newAttendee.setEmail(attendeeRequest.email());
-     newAttendee.setEvent(event);
-     newAttendee.setCreatedAt(LocalDateTime.now());
+    List<Attendee> attendees = this.attendeeService.getAllAttendeesFromEvent(eventId);
 
-     this.attendeeService.registerAttendee(newAttendee); 
+    if (event.getMaximumAttendees() <= attendees.size())
+      throw new EventFullException("Event is full!");
 
-     return new AttendeeIdDTO(newAttendee.getId());
-    }
+    Attendee newAttendee = new Attendee();
 
-    private Event getEventById(String eventId) {
-      return this.eventRepository.findById(eventId)
+    newAttendee.setName(attendeeRequest.name());
+    newAttendee.setEmail(attendeeRequest.email());
+    newAttendee.setEvent(event);
+    newAttendee.setCreatedAt(LocalDateTime.now());
+
+    this.attendeeService.registerAttendee(newAttendee);
+
+    return new AttendeeIdDTO(newAttendee.getId());
+  }
+
+  private Event getEventById(String eventId) {
+    return this.eventRepository.findById(eventId)
         .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + eventId));
-    }
+  }
 
-    private String createSlug(String text) {
-      String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+  private String createSlug(String text) {
+    String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
 
-      return normalized.replaceAll("[\\p{InCOMBINING_DIACRITICAL_MARKS}]", "")
+    return normalized.replaceAll("[\\p{InCOMBINING_DIACRITICAL_MARKS}]", "")
         .replaceAll("[^\\w\\s]", "")
         .replaceAll("\\s+", "-")
         .toLowerCase();
-    }
+  }
 }

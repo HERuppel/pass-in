@@ -17,7 +17,7 @@ public class CheckInService {
   private final CheckInRepository checkInRepository;
 
   public void registerCheckIn(Attendee attendee) {
-    this.verifyCheckInExists (attendee.getId());
+    this.verifyCheckInExists(attendee.getId());
 
     CheckIn newCheckin = new CheckIn();
     newCheckin.setAttendee(attendee);
@@ -33,7 +33,8 @@ public class CheckInService {
   private void verifyCheckInExists(String attendeeId) {
     Optional<CheckIn> isCheckedIn = this.getCheckIn(attendeeId);
 
-    if (isCheckedIn.isPresent()) throw new CheckInAlreadyExistsException("Attendee already checked in!");
+    if (isCheckedIn.isPresent())
+      throw new CheckInAlreadyExistsException("Attendee already checked in!");
 
-  } 
+  }
 }
