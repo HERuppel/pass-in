@@ -1,0 +1,12 @@
+CREATE TABLE attendees (
+  id SERIAL NOT NULL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL, 
+  cpf CHAR(11) NOT NULL, 
+  birthdate DATE NOT NULL, 
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  event_id SERIAL NOT NULL,
+  address_id SERIAL NOT NULL,
+  CONSTRAINT attendees_event_id_fk FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT attendees_address_id_fk FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
