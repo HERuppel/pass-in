@@ -1,7 +1,7 @@
 package rocketseat.com.passin.dto.event;
 
 public record EventDetailDTO(
-    String id,
+    int id,
     String title,
     String details,
     String slug,

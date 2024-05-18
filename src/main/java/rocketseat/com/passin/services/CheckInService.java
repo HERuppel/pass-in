@@ -26,11 +26,11 @@ public class CheckInService {
     this.checkInRepository.save(newCheckin);
   }
 
-  public Optional<CheckIn> getCheckIn(String attendeeId) {
+  public Optional<CheckIn> getCheckIn(Integer attendeeId) {
     return this.checkInRepository.findByAttendeeId(attendeeId);
   }
 
-  private void verifyCheckInExists(String attendeeId) {
+  private void verifyCheckInExists(Integer attendeeId) {
     Optional<CheckIn> isCheckedIn = this.getCheckIn(attendeeId);
 
     if (isCheckedIn.isPresent())

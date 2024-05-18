@@ -1,4 +1,4 @@
-package rocketseat.com.passin.domain.event;
+package rocketseat.com.passin.domain.address;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,24 +10,33 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "events")
+@Table(name = "address")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class Address {
   @Id
   @Column(nullable = false)
   private Integer id;
 
   @Column(nullable = false)
-  private String title;
+  private String country;
 
   @Column(nullable = false)
-  private String details;
+  private String uf;
 
-  @Column(nullable = false, unique = true)
-  private String slug;
+  @Column(nullable = false)
+  private String street;
+
+  @Column()
+  private String district;
+
+  @Column()
+  private String complement;
+
+  @Column(nullable = false)
+  private String zipcode;
 
   @Column(nullable = false, name = "maximum_attendees")
   private Integer maximumAttendees;

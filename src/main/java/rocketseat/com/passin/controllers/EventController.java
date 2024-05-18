@@ -27,7 +27,7 @@ public class EventController {
   private final AttendeeService attendeeService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<EventResponseDTO> getEvents(@PathVariable String id) {
+  public ResponseEntity<EventResponseDTO> getEvents(@PathVariable Integer id) {
     EventResponseDTO eventDetails = this.eventService.getEventDetails(id);
     return ResponseEntity.ok(eventDetails);
   }
@@ -43,14 +43,14 @@ public class EventController {
   }
 
   @GetMapping("/attendees/{id}")
-  public ResponseEntity<AttendeesResponseDTO> getEventAttendees(@PathVariable String id) {
+  public ResponseEntity<AttendeesResponseDTO> getEventAttendees(@PathVariable Integer id) {
     AttendeesResponseDTO attendees = this.attendeeService.getEventsAttendee(id);
 
     return ResponseEntity.ok(attendees);
   }
 
   @PostMapping("/{eventId}/attendees")
-  public ResponseEntity<AttendeeIdDTO> registerParticipant(@PathVariable String eventId,
+  public ResponseEntity<AttendeeIdDTO> registerParticipant(@PathVariable Integer eventId,
       @RequestBody AttendeeRequestDTO attendeeRequest, UriComponentsBuilder uriComponentsBuilder) {
     AttendeeIdDTO attendeeId = this.eventService.registerAttendeeOnEvent(eventId, attendeeRequest);
 

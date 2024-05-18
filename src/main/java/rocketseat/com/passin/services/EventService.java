@@ -24,7 +24,7 @@ public class EventService {
   private final EventRepository eventRepository;
   private final AttendeeService attendeeService;
 
-  public EventResponseDTO getEventDetails(String eventId) {
+  public EventResponseDTO getEventDetails(Integer eventId) {
     Event event = this.getEventById(eventId);
 
     List<Attendee> attendees = this.attendeeService.getAllAttendeesFromEvent(eventId);
@@ -44,7 +44,7 @@ public class EventService {
     return new EventIdDTO(newEvent.getId());
   }
 
-  public AttendeeIdDTO registerAttendeeOnEvent(String eventId, AttendeeRequestDTO attendeeRequest) {
+  public AttendeeIdDTO registerAttendeeOnEvent(Integer eventId, AttendeeRequestDTO attendeeRequest) {
     this.attendeeService.verifyAttendeeSubscription(eventId, attendeeRequest.email());
 
     Event event = this.getEventById(eventId);
@@ -66,7 +66,7 @@ public class EventService {
     return new AttendeeIdDTO(newAttendee.getId());
   }
 
-  private Event getEventById(String eventId) {
+  private Event getEventById(Integer eventId) {
     return this.eventRepository.findById(eventId)
         .orElseThrow(() -> new EventNotFoundException("Event not found with ID: " + eventId));
   }

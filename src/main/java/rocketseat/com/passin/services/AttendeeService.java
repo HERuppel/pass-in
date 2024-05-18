@@ -24,11 +24,11 @@ public class AttendeeService {
   private final AttendeeRepository attendeeRepository;
   private final CheckInService checkInService;
 
-  public List<Attendee> getAllAttendeesFromEvent(String eventId) {
+  public List<Attendee> getAllAttendeesFromEvent(Integer eventId) {
     return this.attendeeRepository.findByEventId(eventId);
   }
 
-  public AttendeesResponseDTO getEventsAttendee(String eventId) {
+  public AttendeesResponseDTO getEventsAttendee(Integer eventId) {
     List<Attendee> attendees = this.getAllAttendeesFromEvent(eventId);
 
     List<AttendeeDetailsDTO> attendeeDetails = attendees.stream().map(attendee -> {
@@ -36,14 +36,21 @@ public class AttendeeService {
 
       LocalDateTime checkedInAt = checkIn.isPresent() ? checkIn.get().getCreatedAt() : null;
 
-      return new AttendeeDetailsDTO(attendee.getId(), attendee.getName(), attendee.getEmail(), attendee.getCreatedAt(),
-          checkedInAt);
+      return new AttendeeDetailsDTO(
+        attendee.getId(),
+        attendee.getName(), 
+        attendee.getEmail(),
+        attendee.getCpf(), 
+        attendee.getBirthdate(), 
+        attendee.getCreatedAt(),
+        checkedInAt
+      );
     }).toList();
 
     return new AttendeesResponseDTO(attendeeDetails);
   }
 
-  public void verifyAttendeeSubscription(String eventId, String email) {
+  public void verifyAttendeeSubscription(Integer eventId, String email) {
     Optional<Attendee> isAttendeeRegistered = this.attendeeRepository.findByEventIdAndEmail(eventId, email);
 
     if (isAttendeeRegistered.isPresent())
@@ -57,7 +64,7 @@ public class AttendeeService {
     return newAttendee;
   }
 
-  public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
+  public AttendeeBadgeResponseDTO getAttendeeBadge(Integer attendeeId, UriComponentsBuilder uriComponentsBuilder) {
     Attendee attendee = this.getAttendee(attendeeId);
 
     var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/check-in").buildAndExpand(attendeeId).toUri()
@@ -68,14 +75,14 @@ public class AttendeeService {
     return new AttendeeBadgeResponseDTO(badge);
   }
 
-  public void checkInAttendee(String attendeeId) {
+  public void checkInAttendee(Integer attendeeId) {
     Attendee attendee = this.getAttendee(attendeeId);
 
     this.checkInService.registerCheckIn(attendee);
   }
 
-  private Attendee getAttendee(String attendeeId) {
+  private Attendee getAttendee(Integer attendeeId) {
     return this.attendeeRepository.findById(attendeeId)
-        .orElseThrow(() -> new AttendeeNotFoundException("Attendee not found with ID: " + attendeeId));
+        .orElseThrow(() -> new AttendeeNotFoundException("Attendee not found with ID: " + attendeeId.toString()));
   }
 }

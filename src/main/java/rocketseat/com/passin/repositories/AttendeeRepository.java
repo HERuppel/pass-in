@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import rocketseat.com.passin.domain.attendee.Attendee;
 
-public interface AttendeeRepository extends JpaRepository<Attendee, String> {
-  List<Attendee> findByEventId(String eventId);
+public interface AttendeeRepository extends JpaRepository<Attendee, Integer> {
+  List<Attendee> findByEventId(Integer eventId);
 
-  Optional<Attendee> findByEventIdAndEmail(String eventId, String email);
+  Optional<Attendee> findByEventIdAndEmail(Integer eventId, String email);
 }

@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -25,7 +23,6 @@ import rocketseat.com.passin.domain.attendee.Attendee;
 public class CheckIn {
   @Id
   @Column(nullable = false)
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   @Column(name = "created_at")
