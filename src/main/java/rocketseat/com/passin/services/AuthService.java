@@ -34,7 +34,7 @@ public class AuthService {
     newUser.setName(signUpRequest.name());
     newUser.setEmail(signUpRequest.email());
     newUser.setPassword(passwordEncoder.encode(signUpRequest.password()));
-    newUser.setCpf(signUpRequest.cpf());
+    newUser.setCpf(signUpRequest.cpf().replaceAll("[^0-9]", ""));
     newUser.setBirthdate(signUpRequest.birthdate());
     newUser.setCreatedAt(LocalDateTime.now());
 
