@@ -1,10 +1,10 @@
 package rocketseat.com.passin.dto.auth;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import rocketseat.com.passin.dto.address.AddressRequestDTO;
 
-public record SignUpRequestDTO(String name, String email, String password, String cpf, Date birthdate, AddressRequestDTO address) {
+public record SignUpRequestDTO(String name, String email, String password, String cpf, LocalDate birthdate, AddressRequestDTO address) {
   public Boolean isValid() {
     return name() != null && !name().isEmpty() &&
            email() != null && !email().isEmpty() &&

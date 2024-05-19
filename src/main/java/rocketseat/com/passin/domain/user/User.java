@@ -1,6 +1,6 @@
 package rocketseat.com.passin.domain.user;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public class User {
   private String cpf;
 
   @Column(nullable = false)
-  private Date birthdate;
+  private LocalDate birthdate;
 
   @Column(name = "created_at")
   private LocalDateTime createdAt;
