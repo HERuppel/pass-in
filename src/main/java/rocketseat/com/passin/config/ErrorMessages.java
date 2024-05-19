@@ -5,6 +5,8 @@ public class ErrorMessages {
   public static final String INVALID_EMAIL = "E-mail inválido!";
   public static final String INVALID_CPF = "CPF inválido!";
   public static final String INVALID_PASSWORD = "A senha deve ser composta por no mínimo 8 caractéres, conter ao menos uma letra maiúscula e ao menos um número";
+  public static final String INVALID_ZIPCODE = "CEP inválido!";
   public static final String EMAIL_ALREADY_IN_USE = "E-mail já registrado!";
   public static final String CPF_ALREADY_IN_USE = "CPF já registrado!";
+  public static final String USER_NOT_FOUND = "Usuário não encontrado!";
 }
