@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class EventService {
+public class UserService {
 
 }
