@@ -30,7 +30,13 @@ public class Address {
   private String uf;
 
   @Column(nullable = false)
+  private String city;
+
+  @Column(nullable = false)
   private String street;
+
+  @Column(nullable = false)
+  private String zipcode;
 
   @Column()
   private String district;
@@ -38,9 +44,4 @@ public class Address {
   @Column()
   private String complement;
 
-  @Column(nullable = false)
-  private String zipcode;
-
-  @Column(nullable = false, name = "maximum_attendees")
-  private Integer maximumAttendees;
 }
