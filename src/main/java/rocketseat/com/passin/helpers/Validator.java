@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class Validator {
   private static final String EMAIL_REGEX = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
   private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*\\d).{8,}$";
+  private static final String ZIPCODE_REGEX = "^\\d{8}$";
 
   public static Boolean isEmailValid(String email) {
     Pattern pattern = Pattern.compile(EMAIL_REGEX);
@@ -50,5 +51,13 @@ public class Validator {
 
     return digit1 == Integer.parseInt(String.valueOf(cpf.charAt(9))) &&
            digit2 == Integer.parseInt(String.valueOf(cpf.charAt(10)));
+  }
+
+  public static Boolean isAddressZipcodeValid(String zipcode) {
+    Pattern pattern = Pattern.compile(ZIPCODE_REGEX);
+
+    Matcher matcher = pattern.matcher(zipcode);
+
+    return matcher.matches();
   }
 }
