@@ -25,7 +25,7 @@ public class AuthController {
   @PostMapping("/signup")
   public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO body) {
     if (!body.isValid())
-      throw new InvalidUserDataException("O usuário deve informar: Nome, E-mail, Senha, CPF e Data de nascimento.");
+      throw new InvalidUserDataException("O usuário deve informar: Nome, E-mail, Senha, CPF e Data de nascimento e informações de endereço.");
 
     if (!Validator.isEmailValid(body.email()))
       throw new InvalidUserDataException("E-mail inválido!");
