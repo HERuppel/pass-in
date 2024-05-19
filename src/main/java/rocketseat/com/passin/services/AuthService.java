@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.address.Address;
 import rocketseat.com.passin.domain.role.Role;
 import rocketseat.com.passin.domain.user.User;
@@ -27,26 +28,27 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
 
   public UserDetailsDTO signUp(SignUpRequestDTO signUpRequest) {
+    String cpf = signUpRequest.cpf().replaceAll("[^0-9]", "");
 
     if (userRepository.existsByEmail(signUpRequest.email()))
-      throw new UserAlreadyExistsException("E-mail já registrado!");
+      throw new UserAlreadyExistsException(ErrorMessages.EMAIL_ALREADY_IN_USE);
     
-    if (userRepository.existsByCpf(signUpRequest.cpf()))
-      throw new UserAlreadyExistsException("CPF já registrado!");
+    if (userRepository.existsByCpf(cpf))
+      throw new UserAlreadyExistsException(ErrorMessages.CPF_ALREADY_IN_USE);
 
     Address newAddress = new Address();
-    newAddress.setCountry(signUpRequest.address().getCountry());
-    newAddress.setUf(signUpRequest.address().getUf());
-    newAddress.setCity(signUpRequest.address().getCity());
-    newAddress.setStreet(signUpRequest.address().getStreet());
-    newAddress.setZipcode(signUpRequest.address().getZipcode());
+    newAddress.setCountry(signUpRequest.address().country());
+    newAddress.setUf(signUpRequest.address().uf());
+    newAddress.setCity(signUpRequest.address().city());
+    newAddress.setStreet(signUpRequest.address().street());
+    newAddress.setZipcode(signUpRequest.address().zipcode());
 
-    if (signUpRequest.address().getComplement() != null && !signUpRequest.address().getComplement().isEmpty() ) {
-      newAddress.setComplement(signUpRequest.address().getComplement());
+    if (signUpRequest.address().complement() != null && !signUpRequest.address().complement().isEmpty() ) {
+      newAddress.setComplement(signUpRequest.address().complement());
     }
 
-    if (signUpRequest.address().getDistrict() != null && !signUpRequest.address().getDistrict().isEmpty() ) {
-      newAddress.setDistrict(signUpRequest.address().getDistrict());
+    if (signUpRequest.address().district() != null && !signUpRequest.address().district().isEmpty() ) {
+      newAddress.setDistrict(signUpRequest.address().district());
     }
     
     addressRepository.save(newAddress);
@@ -55,7 +57,7 @@ public class AuthService {
     newUser.setName(signUpRequest.name());
     newUser.setEmail(signUpRequest.email());
     newUser.setPassword(passwordEncoder.encode(signUpRequest.password()));
-    newUser.setCpf(signUpRequest.cpf().replaceAll("[^0-9]", ""));
+    newUser.setCpf(cpf);
     newUser.setBirthdate(signUpRequest.birthdate());
     newUser.setCreatedAt(LocalDateTime.now());
     newUser.setAddress(newAddress);
