@@ -25,14 +25,12 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
     return http
-            .csrf(csrf -> {
-                csrf.disable();
-            })
-            .cors(cors -> cors.disable())
+            .csrf(csfr -> csfr.disable())
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers(HttpMethod.POST, "/auth/signin").permitAll();
-                auth.requestMatchers(HttpMethod.POST, "/auth/signup").permitAll();
-                auth.anyRequest().authenticated();
+              auth.requestMatchers(HttpMethod.POST, "/auth/signin").permitAll();
+              auth.requestMatchers(HttpMethod.POST, "/auth/signup").permitAll();
+              auth.requestMatchers(HttpMethod.GET, "/auth/user").hasRole("USER");
+              auth.anyRequest().authenticated();
             })
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();

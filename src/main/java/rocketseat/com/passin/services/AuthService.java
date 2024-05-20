@@ -30,13 +30,15 @@ import rocketseat.com.passin.repositories.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
+  @Autowired
   private final UserRepository userRepository;
+  @Autowired
   private final RoleRepository roleRepository;
+  @Autowired
   private final AddressRepository addressRepository;
   @Autowired
   private final PasswordEncoder passwordEncoder;
   
-
   public UserDetailsDTO signUp(SignUpRequestDTO signUpRequest) {
     String cpf = signUpRequest.cpf().replaceAll("[^0-9]", "");
 

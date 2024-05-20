@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-
 import rocketseat.com.passin.domain.user.User;
 
 @Service
@@ -25,6 +25,7 @@ public class TokenService {
       String token = JWT.create()
               .withIssuer("pass-in")
               .withSubject(user.getEmail())
+              .withClaim("id", user.getId())
               .withExpiresAt(generateExpirationDate())
               .sign(algorithm);
 
@@ -46,6 +47,14 @@ public class TokenService {
     } catch (JWTCreationException exception) {
       return "";
     }
+  }
+
+  public Integer extractUserIdFromToken(String token) {
+    Algorithm algorithm = Algorithm.HMAC256(secret);
+    JWTVerifier verifier = JWT.require(algorithm).build();
+    var tokenInfos = verifier.verify(token);
+
+    return tokenInfos.getClaim("id").asInt(); 
   }
 
   private Instant generateExpirationDate() {

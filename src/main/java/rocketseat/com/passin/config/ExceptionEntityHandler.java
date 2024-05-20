@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
@@ -24,5 +26,10 @@ public class ExceptionEntityHandler {
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<HttpStatusCode> handleUserNotFound(UserNotFoundException exception) {
     return ResponseEntity.notFound().build();
+  }
+
+  @ExceptionHandler(AccessTokenNotFoundException.class)
+  public ResponseEntity<HttpStatusCode> handleAccessTokenNotFound(AccessTokenNotFoundException exception) {
+    return ResponseEntity.status(401).build();
   }
 }
