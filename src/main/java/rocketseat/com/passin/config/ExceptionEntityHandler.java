@@ -1,7 +1,9 @@
 package rocketseat.com.passin.config;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -13,6 +15,7 @@ import rocketseat.com.passin.dto.general.ErrorResponseDTO;
 
 @ControllerAdvice
 public class ExceptionEntityHandler {
+
   @ExceptionHandler(UserAlreadyExistsException.class)
   public ResponseEntity<ErrorResponseDTO> handleUserAlreadyExists(UserAlreadyExistsException exception) {
     return ResponseEntity.badRequest().body(new ErrorResponseDTO(exception.getMessage()));
@@ -30,6 +33,11 @@ public class ExceptionEntityHandler {
 
   @ExceptionHandler(AccessTokenNotFoundException.class)
   public ResponseEntity<HttpStatusCode> handleAccessTokenNotFound(AccessTokenNotFoundException exception) {
-    return ResponseEntity.status(401).build();
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(BadCredentialsException exception) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }
