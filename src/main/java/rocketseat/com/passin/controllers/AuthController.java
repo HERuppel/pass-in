@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.user.User;
-import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.dto.auth.SignInRequestDTO;
 import rocketseat.com.passin.dto.auth.SignInResponseDTO;
@@ -16,6 +15,7 @@ import rocketseat.com.passin.dto.user.UserDetailsDTO;
 import rocketseat.com.passin.helpers.Validator;
 import rocketseat.com.passin.services.AuthService;
 import rocketseat.com.passin.services.TokenService;
+import rocketseat.com.passin.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,6 +30,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AuthController {
   @Autowired
   private final AuthService authService;
+  @Autowired
+  private final UserService userService;
   @Autowired
   private final TokenService tokenService;
   @Autowired
@@ -75,25 +75,10 @@ public class AuthController {
 
       var authUser = (User) auth.getPrincipal();
 
-      UserDetailsDTO user = this.authService.getUser(authUser.getId());
+      UserDetailsDTO user = this.userService.getUser(authUser.getId());
 
       var token = this.tokenService.generateToken(authUser);
 
       return ResponseEntity.ok(new SignInResponseDTO(user, token));
-  }
-  
-  @GetMapping("/user")
-  public ResponseEntity<UserDetailsDTO> getUser(@RequestHeader("Authorization") String authorizationHeader) {
-    if (authorizationHeader == null) {
-      throw new AccessTokenNotFoundException(ErrorMessages.ACCESS_TOKEN_NOT_FOUND);
-    }
-
-    String token = authorizationHeader.replace("Bearer ", "");
-
-    Integer userId = this.tokenService.extractUserIdFromToken(token);
-
-    UserDetailsDTO userDetailsDTO = this.authService.getUser(userId);
-
-    return ResponseEntity.ok(userDetailsDTO);
   }
 }

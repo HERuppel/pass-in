@@ -29,7 +29,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
               auth.requestMatchers(HttpMethod.POST, "/auth/signin").permitAll();
               auth.requestMatchers(HttpMethod.POST, "/auth/signup").permitAll();
-              auth.requestMatchers(HttpMethod.GET, "/auth/user").hasRole("USER");
+              auth.requestMatchers(HttpMethod.GET, "/user").hasRole("USER");
               auth.anyRequest().authenticated();
             })
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
