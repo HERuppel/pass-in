@@ -19,9 +19,9 @@ import rocketseat.com.passin.services.UserService;
 @RequiredArgsConstructor
 public class UserController {
   @Autowired
-  final UserService userService;
+  private final UserService userService;
   @Autowired
-  final TokenService tokenService;
+  private final TokenService tokenService;
     
   @GetMapping
   public ResponseEntity<UserDetailsDTO> getUser(@RequestHeader("Authorization") String authorizationHeader) {

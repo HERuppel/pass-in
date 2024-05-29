@@ -14,6 +14,7 @@ import rocketseat.com.passin.dto.auth.SignUpResponseDTO;
 import rocketseat.com.passin.dto.user.UserDetailsDTO;
 import rocketseat.com.passin.helpers.Validator;
 import rocketseat.com.passin.services.AuthService;
+import rocketseat.com.passin.services.EmailService;
 import rocketseat.com.passin.services.TokenService;
 import rocketseat.com.passin.services.UserService;
 
@@ -34,6 +35,8 @@ public class AuthController {
   private final UserService userService;
   @Autowired
   private final TokenService tokenService;
+  @Autowired
+  private final EmailService emailService;
   @Autowired
   private AuthenticationManager authenticationManager;
   
@@ -63,6 +66,8 @@ public class AuthController {
     var authUser = (User) auth.getPrincipal();
 
     var token = tokenService.generateToken(authUser);
+
+    emailService.sendEmail(authUser.getEmail(), "CONTA CRIADA,", "CONFIRME COM O PIN: 837843");
 
     return ResponseEntity.ok(new SignUpResponseDTO(createdUser, token));
   }

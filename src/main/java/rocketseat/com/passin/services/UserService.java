@@ -19,7 +19,7 @@ import rocketseat.com.passin.repositories.UserRepository;
 @RequiredArgsConstructor
 public class UserService {
   @Autowired
-  final UserRepository userRepository;
+  private final UserRepository userRepository;
 
   public UserDetailsDTO getUser(Integer userId) {
     Optional<User> user = this.userRepository.findById(userId);
