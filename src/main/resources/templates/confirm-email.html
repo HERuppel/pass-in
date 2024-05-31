@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Confirm Email</title>
+    <style>
+        .title {
+            font-size: 24px;
+        }
+        .text {
+            font-size: 16px;
+            font-weight: 400;
+            color: #202020;
+        }
+        .pin-code {
+            font-size: 18px;
+            font-weight: bold;
+            color: #D54D00;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Confirmação de e-mail</h1>
+    <p class="text">
+        Insira o código: 
+        <span class="pin-code" th:text="${pinCode}"></span>
+        para confirmar seu e-mail.
+    </p>
+</body>
+</html>

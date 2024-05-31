@@ -7,6 +7,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
 import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
@@ -39,5 +40,10 @@ public class ExceptionEntityHandler {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(BadCredentialsException exception) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+
+  @ExceptionHandler(SendMailException.class)
+  public ResponseEntity<ErrorResponseDTO> handleSendMailException(SendMailException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }

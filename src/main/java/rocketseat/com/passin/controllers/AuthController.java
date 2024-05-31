@@ -67,7 +67,7 @@ public class AuthController {
 
     var token = tokenService.generateToken(authUser);
 
-    emailService.sendEmail(authUser.getEmail(), "CONTA CRIADA,", "CONFIRME COM O PIN: 837843");
+    emailService.sendPinToEmail(authUser.getEmail(), createdUser.pinCode());
 
     return ResponseEntity.ok(new SignUpResponseDTO(createdUser, token));
   }

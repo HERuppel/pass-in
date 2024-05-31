@@ -3,6 +3,7 @@ package rocketseat.com.passin.services;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,10 @@ public class AuthService implements UserDetailsService {
     Set<String> rolesToReturn = new HashSet<>();
     rolesToReturn.add(roleString);
 
+    String pinCode = generatePinCode(6);
+
+    newUser.setPinCode(pinCode);
+
     userRepository.save(newUser);
 
     return new UserDetailsDTO(
@@ -89,9 +94,22 @@ public class AuthService implements UserDetailsService {
       newUser.getCpf(), 
       newUser.getBirthdate(), 
       newUser.getCreatedAt(),
+      newUser.getPinCode(),
       newAddress,
       rolesToReturn
     );
+  }
+
+  private String generatePinCode(Integer length) {
+    Random random = new Random();
+    StringBuilder pinCode = new StringBuilder(length);
+    
+    for (int i = 0; i < length; i++) {
+        int digit = random.nextInt(10);
+        pinCode.append(digit);
+    }
+    
+    return pinCode.toString();
   }
 
   @Override

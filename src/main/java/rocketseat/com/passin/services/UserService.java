@@ -36,6 +36,7 @@ public class UserService {
       user.get().getCpf(), 
       user.get().getBirthdate(), 
       user.get().getCreatedAt(), 
+      user.get().getPinCode(),
       user.get().getAddress(), 
       roleNames
     );
