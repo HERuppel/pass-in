@@ -24,22 +24,21 @@ public class UserService {
   public UserDetailsDTO getUser(Integer userId) {
     Optional<User> user = this.userRepository.findById(userId);
 
-    if (!user.isPresent()) 
+    if (!user.isPresent())
       throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND);
 
     Set<String> roleNames = user.get().getRoles().stream().map(Role::getName).collect(Collectors.toSet());
 
     UserDetailsDTO userDetailsDTO = new UserDetailsDTO(
-      userId, 
-      user.get().getName(), 
-      user.get().getEmail(), 
-      user.get().getCpf(), 
-      user.get().getBirthdate(), 
-      user.get().getCreatedAt(), 
-      user.get().getPinCode(),
-      user.get().getAddress(), 
-      roleNames
-    );
+        userId,
+        user.get().getName(),
+        user.get().getEmail(),
+        user.get().getCpf(),
+        user.get().getBirthdate(),
+        user.get().getCreatedAt(),
+        user.get().getPinCode(),
+        user.get().getAddress(),
+        roleNames);
 
     return userDetailsDTO;
   }

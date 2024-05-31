@@ -97,7 +97,7 @@ public class AuthController {
   public ResponseEntity<ConfirmAccountResponseDTO> confirmAccount(@RequestBody ConfirmAccountRequestDTO body) {
     if (!body.isValid())
       throw new InvalidPinCodeException(ErrorMessages.INVALID_PIN_CODE);
-    
+
     Boolean confirmPinCode = this.authService.confirmAccount(body.email(), body.pinCode());
 
     return ResponseEntity.ok(new ConfirmAccountResponseDTO(confirmPinCode));

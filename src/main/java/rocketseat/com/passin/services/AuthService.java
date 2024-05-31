@@ -40,14 +40,14 @@ public class AuthService implements UserDetailsService {
   private final AddressRepository addressRepository;
   @Autowired
   private final PasswordEncoder passwordEncoder;
-  
+
   @Transactional
   public UserDetailsDTO signUp(SignUpRequestDTO signUpRequest) {
     String cpf = signUpRequest.cpf().replaceAll("[^0-9]", "");
 
     if (userRepository.existsByEmail(signUpRequest.email()))
       throw new UserAlreadyExistsException(ErrorMessages.EMAIL_ALREADY_IN_USE);
-    
+
     if (userRepository.existsByCpf(cpf))
       throw new UserAlreadyExistsException(ErrorMessages.CPF_ALREADY_IN_USE);
 
@@ -58,14 +58,14 @@ public class AuthService implements UserDetailsService {
     newAddress.setStreet(signUpRequest.address().street());
     newAddress.setZipcode(signUpRequest.address().zipcode());
 
-    if (signUpRequest.address().complement() != null && !signUpRequest.address().complement().isEmpty() ) {
+    if (signUpRequest.address().complement() != null && !signUpRequest.address().complement().isEmpty()) {
       newAddress.setComplement(signUpRequest.address().complement());
     }
 
-    if (signUpRequest.address().district() != null && !signUpRequest.address().district().isEmpty() ) {
+    if (signUpRequest.address().district() != null && !signUpRequest.address().district().isEmpty()) {
       newAddress.setDistrict(signUpRequest.address().district());
     }
-    
+
     addressRepository.save(newAddress);
 
     User newUser = new User();
@@ -91,23 +91,22 @@ public class AuthService implements UserDetailsService {
     userRepository.save(newUser);
 
     return new UserDetailsDTO(
-      newUser.getId(), 
-      newUser.getName(), 
-      newUser.getEmail(), 
-      newUser.getCpf(), 
-      newUser.getBirthdate(), 
-      newUser.getCreatedAt(),
-      newUser.getPinCode(),
-      newAddress,
-      rolesToReturn
-    );
+        newUser.getId(),
+        newUser.getName(),
+        newUser.getEmail(),
+        newUser.getCpf(),
+        newUser.getBirthdate(),
+        newUser.getCreatedAt(),
+        newUser.getPinCode(),
+        newAddress,
+        rolesToReturn);
   }
 
   @Transactional
   public Boolean confirmAccount(String email, String pinCode) {
     Optional<User> user = this.userRepository.findUserByEmail(email);
 
-    if (!user.isPresent()) 
+    if (!user.isPresent())
       throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND);
 
     User userToUpdate = user.get();
@@ -124,12 +123,12 @@ public class AuthService implements UserDetailsService {
   private String generatePinCode(Integer length) {
     Random random = new Random();
     StringBuilder pinCode = new StringBuilder(length);
-    
+
     for (int i = 0; i < length; i++) {
-        int digit = random.nextInt(10);
-        pinCode.append(digit);
+      int digit = random.nextInt(10);
+      pinCode.append(digit);
     }
-    
+
     return pinCode.toString();
   }
 

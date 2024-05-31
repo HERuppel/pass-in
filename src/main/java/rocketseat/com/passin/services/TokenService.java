@@ -17,17 +17,17 @@ import rocketseat.com.passin.domain.user.User;
 public class TokenService {
   @Value("${api.security.token.secret}")
   private String secret;
-  
+
   public String generateToken(User user) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
 
       String token = JWT.create()
-              .withIssuer("pass-in")
-              .withSubject(user.getEmail())
-              .withClaim("id", user.getId())
-              .withExpiresAt(generateExpirationDate())
-              .sign(algorithm);
+          .withIssuer("pass-in")
+          .withSubject(user.getEmail())
+          .withClaim("id", user.getId())
+          .withExpiresAt(generateExpirationDate())
+          .sign(algorithm);
 
       return token;
     } catch (JWTCreationException exception) {
@@ -40,10 +40,10 @@ public class TokenService {
       Algorithm algorithm = Algorithm.HMAC256(secret);
 
       return JWT.require(algorithm)
-              .withIssuer("pass-in")
-              .build()
-              .verify(token)
-              .getSubject();
+          .withIssuer("pass-in")
+          .build()
+          .verify(token)
+          .getSubject();
     } catch (JWTCreationException exception) {
       return "";
     }
@@ -54,7 +54,7 @@ public class TokenService {
     JWTVerifier verifier = JWT.require(algorithm).build();
     var tokenInfos = verifier.verify(token);
 
-    return tokenInfos.getClaim("id").asInt(); 
+    return tokenInfos.getClaim("id").asInt();
   }
 
   private Instant generateExpirationDate() {

@@ -22,7 +22,7 @@ public class UserController {
   private final UserService userService;
   @Autowired
   private final TokenService tokenService;
-    
+
   @GetMapping
   public ResponseEntity<UserDetailsDTO> getUser(@RequestHeader("Authorization") String authorizationHeader) {
     if (authorizationHeader == null) {
