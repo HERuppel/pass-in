@@ -59,6 +59,9 @@ public class User implements UserDetails {
   @Column(name = "created_at")
   private LocalDateTime createdAt;
 
+  @Column(name = "pin_code")
+  private String pinCode;
+
   @OneToOne
   @JoinColumn(name = "address_id", nullable = false)
   private Address address;
