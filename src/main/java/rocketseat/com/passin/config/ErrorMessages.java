@@ -11,4 +11,5 @@ public class ErrorMessages {
   public static final String USER_NOT_FOUND = "Usuário não encontrado!";
   public static final String ACCESS_TOKEN_NOT_FOUND = "Token de acesso não encontrado";
   public static final String SEND_CONFIRMATION_MAIL_ERROR = "Não foi possível enviar o e-mail de confirmação!";
+  public static final String USER_NOT_CONFIRMED = "O e-mail deste usuário ainda não foi confirmado. Cheque sua caixa de entrada!";
 }

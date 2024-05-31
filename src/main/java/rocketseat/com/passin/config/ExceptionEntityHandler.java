@@ -11,6 +11,7 @@ import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
 import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
+import rocketseat.com.passin.domain.user.exceptions.UserNotConfirmedException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.general.ErrorResponseDTO;
 
@@ -45,5 +46,10 @@ public class ExceptionEntityHandler {
   @ExceptionHandler(SendMailException.class)
   public ResponseEntity<ErrorResponseDTO> handleSendMailException(SendMailException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+
+  @ExceptionHandler(UserNotConfirmedException.class)
+  public ResponseEntity<ErrorResponseDTO> handleUserNotConfirmedException(UserNotConfirmedException exception) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }

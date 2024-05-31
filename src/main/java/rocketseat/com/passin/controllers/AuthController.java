@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.user.User;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
+import rocketseat.com.passin.domain.user.exceptions.UserNotConfirmedException;
 import rocketseat.com.passin.dto.auth.SignInRequestDTO;
 import rocketseat.com.passin.dto.auth.SignInResponseDTO;
 import rocketseat.com.passin.dto.auth.SignUpRequestDTO;
@@ -39,7 +40,7 @@ public class AuthController {
   private final EmailService emailService;
   @Autowired
   private AuthenticationManager authenticationManager;
-  
+
   @PostMapping("/signup")
   public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO body) {
     if (!body.isValid())
@@ -74,16 +75,20 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ResponseEntity<SignInResponseDTO> signIn(@RequestBody SignInRequestDTO body) {
-      var userPassword = new UsernamePasswordAuthenticationToken(body.email(), body.password());
+    var userPassword = new UsernamePasswordAuthenticationToken(body.email(), body.password());
 
-      var auth = this.authenticationManager.authenticate(userPassword);
+    var auth = this.authenticationManager.authenticate(userPassword);
 
-      var authUser = (User) auth.getPrincipal();
+    var authUser = (User) auth.getPrincipal();
 
-      UserDetailsDTO user = this.userService.getUser(authUser.getId());
+    UserDetailsDTO user = this.userService.getUser(authUser.getId());
 
-      var token = this.tokenService.generateToken(authUser);
+    if (user.pinCode() != null) {
+      throw new UserNotConfirmedException(ErrorMessages.USER_NOT_CONFIRMED);
+    }
 
-      return ResponseEntity.ok(new SignInResponseDTO(user, token));
+    var token = this.tokenService.generateToken(authUser);
+
+    return ResponseEntity.ok(new SignInResponseDTO(user, token));
   }
 }
