@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.address.Address;
@@ -36,6 +37,7 @@ public class AuthService implements UserDetailsService {
   @Autowired
   private final PasswordEncoder passwordEncoder;
   
+  @Transactional
   public UserDetailsDTO signUp(SignUpRequestDTO signUpRequest) {
     String cpf = signUpRequest.cpf().replaceAll("[^0-9]", "");
 
