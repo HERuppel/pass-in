@@ -1,0 +1,1 @@
+INSERT INTO roles (name) VALUES ('EVENT_OWNER'), ('ATTENDEE');
