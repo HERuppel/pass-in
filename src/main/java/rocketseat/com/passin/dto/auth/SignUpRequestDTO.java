@@ -11,6 +11,6 @@ public record SignUpRequestDTO(String name, String email, String password, Strin
            password() != null && !password().isEmpty() &&
            cpf() != null && !cpf().isEmpty() &&
            birthdate() != null &&
-           address().isValid();
+           address() != null && address().isValid();
   }
 }
