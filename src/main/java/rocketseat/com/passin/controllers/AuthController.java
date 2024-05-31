@@ -66,11 +66,9 @@ public class AuthController {
 
     var authUser = (User) auth.getPrincipal();
 
-    var token = tokenService.generateToken(authUser);
-
     emailService.sendPinToEmail(authUser.getEmail(), createdUser.pinCode());
 
-    return ResponseEntity.ok(new SignUpResponseDTO(createdUser, token));
+    return ResponseEntity.ok(new SignUpResponseDTO(createdUser));
   }
 
   @PostMapping("/signin")
