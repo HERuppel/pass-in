@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
 import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
+import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotConfirmedException;
@@ -50,6 +51,10 @@ public class ExceptionEntityHandler {
 
   @ExceptionHandler(UserNotConfirmedException.class)
   public ResponseEntity<ErrorResponseDTO> handleUserNotConfirmedException(UserNotConfirmedException exception) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(InvalidPinCodeException.class)
+  public ResponseEntity<ErrorResponseDTO> handleInvalidPinCodeException(InvalidPinCodeException exception) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }

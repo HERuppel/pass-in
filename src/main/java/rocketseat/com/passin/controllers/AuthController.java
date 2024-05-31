@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.user.User;
+import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotConfirmedException;
+import rocketseat.com.passin.dto.auth.ConfirmAccountRequestDTO;
+import rocketseat.com.passin.dto.auth.ConfirmAccountResponseDTO;
 import rocketseat.com.passin.dto.auth.SignInRequestDTO;
 import rocketseat.com.passin.dto.auth.SignInResponseDTO;
 import rocketseat.com.passin.dto.auth.SignUpRequestDTO;
@@ -89,4 +92,15 @@ public class AuthController {
 
     return ResponseEntity.ok(new SignInResponseDTO(user, token));
   }
+
+  @PostMapping("/confirm-account")
+  public ResponseEntity<ConfirmAccountResponseDTO> confirmAccount(@RequestBody ConfirmAccountRequestDTO body) {
+    if (!body.isValid())
+      throw new InvalidPinCodeException(ErrorMessages.INVALID_PIN_CODE);
+    
+    Boolean confirmPinCode = this.authService.confirmAccount(body.email(), body.pinCode());
+
+    return ResponseEntity.ok(new ConfirmAccountResponseDTO(confirmPinCode));
+  }
+
 }

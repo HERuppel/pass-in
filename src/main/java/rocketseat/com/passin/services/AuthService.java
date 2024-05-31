@@ -3,6 +3,7 @@ package rocketseat.com.passin.services;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -19,7 +20,9 @@ import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.address.Address;
 import rocketseat.com.passin.domain.role.Role;
 import rocketseat.com.passin.domain.user.User;
+import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
+import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.auth.SignUpRequestDTO;
 import rocketseat.com.passin.dto.user.UserDetailsDTO;
 import rocketseat.com.passin.repositories.AddressRepository;
@@ -98,6 +101,24 @@ public class AuthService implements UserDetailsService {
       newAddress,
       rolesToReturn
     );
+  }
+
+  @Transactional
+  public Boolean confirmAccount(String email, String pinCode) {
+    Optional<User> user = this.userRepository.findUserByEmail(email);
+
+    if (!user.isPresent()) 
+      throw new UserNotFoundException(ErrorMessages.USER_NOT_FOUND);
+
+    User userToUpdate = user.get();
+
+    if (!userToUpdate.getPinCode().toString().trim().equals(pinCode.toString().trim()))
+      throw new InvalidPinCodeException(ErrorMessages.INVALID_PIN_CODE);
+
+    userToUpdate.setPinCode(null);
+    userRepository.save(userToUpdate);
+
+    return true;
   }
 
   private String generatePinCode(Integer length) {
