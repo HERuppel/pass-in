@@ -85,8 +85,11 @@ public class User implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     boolean isEventOwner = this.roles.stream().anyMatch(obj -> "EVENT_OWNER".equals(obj.getName()));
+    boolean isAttendee = this.roles.stream().anyMatch(obj -> "ATTENDEE".equals(obj.getName()));
 
-    if (isEventOwner) {
+    if (isEventOwner && !isAttendee) {
+      return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    } else if (isEventOwner && isAttendee) {
       return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
     }
     return List.of(new SimpleGrantedAuthority("ROLE_USER"));

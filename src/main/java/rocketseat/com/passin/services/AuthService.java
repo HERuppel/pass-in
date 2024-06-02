@@ -1,8 +1,10 @@
 package rocketseat.com.passin.services;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
@@ -25,6 +27,7 @@ import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.auth.SignUpRequestDTO;
 import rocketseat.com.passin.dto.user.UserDetailsDTO;
+import rocketseat.com.passin.dto.user.UserTypeDTO;
 import rocketseat.com.passin.repositories.AddressRepository;
 import rocketseat.com.passin.repositories.RoleRepository;
 import rocketseat.com.passin.repositories.UserRepository;
@@ -78,11 +81,24 @@ public class AuthService implements UserDetailsService {
     newUser.setAddress(newAddress);
 
     Role role = roleRepository.findByName("ATTENDEE");
-    newUser.setRoles(Collections.singleton(role));
-
-    String roleString = new String(role.getName());
     Set<String> rolesToReturn = new HashSet<>();
-    rolesToReturn.add(roleString);
+
+    if (signUpRequest.userType() == UserTypeDTO.ATTENDEE) {
+      newUser.setRoles(Collections.singleton(role));
+      String roleString = new String(role.getName());
+      rolesToReturn.add(roleString);
+    } else if (signUpRequest.userType() == UserTypeDTO.EVENT_OWNER) {
+      role = roleRepository.findByName("EVENT_OWNER");
+      newUser.setRoles(Collections.singleton(role));
+      String roleString = new String(role.getName());
+      rolesToReturn.add(roleString);
+    } else if (signUpRequest.userType() == UserTypeDTO.BOTH) {
+      List<String> roleNames = Arrays.asList("EVENT_OWNER", "ATTENDEE");
+      List<Role> roles = roleRepository.findByNames(roleNames);
+      roles.forEach(r -> rolesToReturn.add(r.getName()));
+      Set<Role> roleSet = new HashSet<>(roles);
+      newUser.setRoles(roleSet);
+    }
 
     String pinCode = generatePinCode(6);
 
