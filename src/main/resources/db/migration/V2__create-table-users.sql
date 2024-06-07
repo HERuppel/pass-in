@@ -7,6 +7,6 @@ CREATE TABLE users (
   birthdate DATE NOT NULL, 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   pin_code VARCHAR(6),
-  address_id SERIAL NOT NULL,
+  address_id INTEGER NOT NULL,
   CONSTRAINT users_address_id_fk FOREIGN KEY (address_id) REFERENCES address (id) ON DELETE CASCADE ON UPDATE CASCADE
 )
