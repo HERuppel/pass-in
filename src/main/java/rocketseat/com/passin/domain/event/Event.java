@@ -1,5 +1,6 @@
 package rocketseat.com.passin.domain.event;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -11,11 +12,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import rocketseat.com.passin.domain.address.Address;
 import rocketseat.com.passin.domain.user.User;
 
 @Entity
@@ -36,15 +39,21 @@ public class Event {
   @Column(nullable = false)
   private String details;
 
-  @Column(nullable = false, unique = true)
-  private String slug;
-
   @Column(nullable = false, name = "maximum_attendees")
   private Integer maximumAttendees;
 
   @ManyToOne
   @JoinColumn(name = "owner_id", nullable = false)
   private User owner;
+
+  @Column(name = "start_date")
+  private LocalDateTime startDate;
+
+  @Column(name = "end_date")
+  private LocalDateTime endDate;
+
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
   @ManyToMany
   @JoinTable(
@@ -53,4 +62,8 @@ public class Event {
     inverseJoinColumns = @JoinColumn(name = "attendee_id")
   )
   private Set<User> attendees;
+  
+  @OneToOne
+  @JoinColumn(name = "address_id", nullable = false)
+  private Address address;
 }

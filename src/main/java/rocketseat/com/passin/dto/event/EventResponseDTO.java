@@ -12,8 +12,11 @@ public class EventResponseDTO {
         event.getId(),
         event.getTitle(),
         event.getDetails(),
-        event.getSlug(),
+        event.getStartDate(),
+        event.getEndDate(),
+        event.getCreatedAt(),
         event.getOwner(),
+        event.getAddress(),
         event.getMaximumAttendees(),
         numberOfAttendees);
   }
