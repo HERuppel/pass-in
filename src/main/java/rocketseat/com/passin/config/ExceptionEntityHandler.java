@@ -11,6 +11,7 @@ import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
 import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
+import rocketseat.com.passin.domain.user.exceptions.SignupException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotConfirmedException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
@@ -56,5 +57,9 @@ public class ExceptionEntityHandler {
   @ExceptionHandler(InvalidPinCodeException.class)
   public ResponseEntity<ErrorResponseDTO> handleInvalidPinCodeException(InvalidPinCodeException exception) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(SignupException.class)
+  public ResponseEntity<ErrorResponseDTO> handleSignupException(InvalidPinCodeException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }

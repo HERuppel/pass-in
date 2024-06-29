@@ -13,4 +13,5 @@ public class ErrorMessages {
   public static final String SEND_CONFIRMATION_MAIL_ERROR = "Não foi possível enviar o e-mail de confirmação!";
   public static final String USER_NOT_CONFIRMED = "O e-mail deste usuário ainda não foi confirmado. Cheque sua caixa de entrada!";
   public static final String INVALID_PIN_CODE = "Código de confirmação inválido!";
+  public static final String SIGNUP_ERROR = "Não foi possível registrar o usuário!";
 }

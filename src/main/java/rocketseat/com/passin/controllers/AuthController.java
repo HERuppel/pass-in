@@ -18,7 +18,6 @@ import rocketseat.com.passin.dto.auth.SignUpResponseDTO;
 import rocketseat.com.passin.dto.user.UserDetailsDTO;
 import rocketseat.com.passin.helpers.Validator;
 import rocketseat.com.passin.services.AuthService;
-import rocketseat.com.passin.services.EmailService;
 import rocketseat.com.passin.services.TokenService;
 import rocketseat.com.passin.services.UserService;
 
@@ -40,8 +39,6 @@ public class AuthController {
   @Autowired
   private final TokenService tokenService;
   @Autowired
-  private final EmailService emailService;
-  @Autowired
   private AuthenticationManager authenticationManager;
 
   @PostMapping("/signup")
@@ -61,15 +58,7 @@ public class AuthController {
     if (!Validator.isAddressZipcodeValid(body.address().zipcode()))
       throw new InvalidUserDataException(ErrorMessages.INVALID_ZIPCODE);
 
-    UserDetailsDTO createdUser = this.authService.signUp(body);
-
-    var userPassword = new UsernamePasswordAuthenticationToken(body.email(), body.password());
-
-    var auth = this.authenticationManager.authenticate(userPassword);
-
-    var authUser = (User) auth.getPrincipal();
-
-    emailService.sendPinToEmail(authUser.getEmail(), createdUser.pinCode());
+    UserDetailsDTO createdUser = this.authService.createUserAndSendMail(body);
 
     return ResponseEntity.ok(new SignUpResponseDTO(createdUser));
   }

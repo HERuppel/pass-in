@@ -23,6 +23,7 @@ import rocketseat.com.passin.domain.address.Address;
 import rocketseat.com.passin.domain.role.Role;
 import rocketseat.com.passin.domain.user.User;
 import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
+import rocketseat.com.passin.domain.user.exceptions.SignupException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.auth.SignUpRequestDTO;
@@ -43,9 +44,11 @@ public class AuthService implements UserDetailsService {
   private final AddressRepository addressRepository;
   @Autowired
   private final PasswordEncoder passwordEncoder;
+  @Autowired
+  private final EmailService emailService;
 
   @Transactional
-  public UserDetailsDTO signUp(SignUpRequestDTO signUpRequest) {
+  private UserDetailsDTO signUp(SignUpRequestDTO signUpRequest) {
     String cpf = signUpRequest.cpf().replaceAll("[^0-9]", "");
 
     if (userRepository.existsByEmail(signUpRequest.email()))
@@ -116,6 +119,19 @@ public class AuthService implements UserDetailsService {
         newUser.getPinCode(),
         newAddress,
         rolesToReturn);
+  }
+
+  @Transactional
+  public UserDetailsDTO createUserAndSendMail(SignUpRequestDTO signUpRequest) {
+    try {
+      UserDetailsDTO createdUser = this.signUp(signUpRequest);
+  
+      emailService.sendPinToEmail(createdUser.email(), createdUser.pinCode());
+  
+      return createdUser;
+    } catch (Exception e) {
+      throw new SignupException(ErrorMessages.SIGNUP_ERROR);
+    }
   }
 
   @Transactional
