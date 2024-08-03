@@ -30,7 +30,7 @@ public class SecurityConfig {
               auth.requestMatchers(HttpMethod.POST, "/auth/signin").permitAll();
               auth.requestMatchers(HttpMethod.POST, "/auth/signup").permitAll();
               auth.requestMatchers(HttpMethod.POST, "/auth/confirm-account").permitAll();
-              auth.requestMatchers(HttpMethod.GET, "/user").hasRole("USER");
+              auth.requestMatchers(HttpMethod.GET, "/user").hasAnyRole("USER", "ADMIN");
               auth.anyRequest().authenticated();
             })
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
