@@ -11,6 +11,7 @@ import rocketseat.com.passin.domain.address.Address;
 import rocketseat.com.passin.domain.event.Event;
 import rocketseat.com.passin.domain.user.User;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
+import rocketseat.com.passin.dto.address.AddressRequestDTO;
 import rocketseat.com.passin.dto.event.CreateEventRequestDTO;
 import rocketseat.com.passin.dto.event.EventResponseDTO;
 import rocketseat.com.passin.repositories.AddressRepository;
@@ -44,15 +45,15 @@ public class EventService {
     
     if (createEventRequest.address().isPresent()) {
       Address newAddress = new Address();
-      Address address = createEventRequest.address().get();
+      AddressRequestDTO address = createEventRequest.address().get();
 
-      newAddress.setCountry(address.getCountry());
-      newAddress.setUf(address.getUf());
-      newAddress.setCity(address.getCity());
-      newAddress.setStreet(address.getStreet());
-      newAddress.setZipcode(address.getZipcode());
-      newAddress.setDistrict(address.getDistrict() != null ? address.getDistrict() : null);
-      newAddress.setComplement(address.getComplement() != null ? address.getComplement() : null);
+      newAddress.setCountry(address.country());
+      newAddress.setUf(address.uf());
+      newAddress.setCity(address.city());
+      newAddress.setStreet(address.street());
+      newAddress.setZipcode(address.zipcode());
+      newAddress.setDistrict(address.district() != null ? address.district() : null);
+      newAddress.setComplement(address.complement() != null ? address.complement() : null);
 
       this.addressRepository.save(newAddress);
 
