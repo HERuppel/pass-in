@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.address.Address;
@@ -28,6 +29,7 @@ public class EventService {
   @Autowired
   private final AddressRepository addressRepository;
 
+  @Transactional
   public EventResponseDTO create(CreateEventRequestDTO createEventRequest, Integer ownerId) {
 
     User owner = this.userRepository.findById(ownerId)
