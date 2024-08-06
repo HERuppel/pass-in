@@ -1,5 +1,6 @@
 package rocketseat.com.passin.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.role.Role;
+import rocketseat.com.passin.domain.role.exceptions.NoRolesException;
 import rocketseat.com.passin.domain.user.User;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.user.UserDetailsDTO;
@@ -41,5 +43,10 @@ public class UserService {
         roleNames);
 
     return userDetailsDTO;
+  }
+
+  public List<Role> getUserRoles(Integer userId) {
+    return this.userRepository.findRolesByUserId(userId)
+      .orElseThrow(() -> new NoRolesException(ErrorMessages.NO_ROLES_ERROR));
   }
 }
