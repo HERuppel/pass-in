@@ -33,6 +33,16 @@ public class EventService {
     User owner = this.userRepository.findById(ownerId)
       .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
+    Event newEvent = convertToEvent(createEventRequest, owner);
+
+    this.eventRepository.save(newEvent);
+
+    EventResponseDTO eventCreated = new EventResponseDTO(newEvent, 0);
+
+    return eventCreated;
+  }
+
+  private Event convertToEvent(CreateEventRequestDTO createEventRequest, User owner) {
     Event newEvent = new Event();
 
     newEvent.setTitle(createEventRequest.title());
@@ -42,28 +52,29 @@ public class EventService {
     newEvent.setEndDate(createEventRequest.endDate());
     newEvent.setOwner(owner);
     newEvent.setCreatedAt(LocalDateTime.now());
-    
-    if (createEventRequest.address().isPresent()) {
-      Address newAddress = new Address();
-      AddressRequestDTO address = createEventRequest.address().get();
 
-      newAddress.setCountry(address.country());
-      newAddress.setUf(address.uf());
-      newAddress.setCity(address.city());
-      newAddress.setStreet(address.street());
-      newAddress.setZipcode(address.zipcode());
-      newAddress.setDistrict(address.district() != null ? address.district() : null);
-      newAddress.setComplement(address.complement() != null ? address.complement() : null);
+    createEventRequest.address().ifPresent(addressRequest -> {
+      Address newAddress = convertToAddress(addressRequest);
 
       this.addressRepository.save(newAddress);
 
       newEvent.setAddress(newAddress);
-    }
+    });
 
-    this.eventRepository.save(newEvent);
+    return newEvent;
+  }
 
-    EventResponseDTO eventCreated = new EventResponseDTO(newEvent, 0);
+  private Address convertToAddress(AddressRequestDTO addressRequest) {
+    Address newAddress = new Address();
 
-    return eventCreated;
+    newAddress.setCountry(addressRequest.country());
+    newAddress.setUf(addressRequest.uf());
+    newAddress.setCity(addressRequest.city());
+    newAddress.setStreet(addressRequest.street());
+    newAddress.setZipcode(addressRequest.zipcode());
+    newAddress.setDistrict(addressRequest.district() != null ? addressRequest.district() : null);
+    newAddress.setComplement(addressRequest.complement() != null ? addressRequest.complement() : null);
+
+    return newAddress;
   }
 }

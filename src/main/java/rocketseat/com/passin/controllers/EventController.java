@@ -45,9 +45,9 @@ public class EventController {
 
       List<Role> roles = this.userService.getUserRoles(userId);
 
-      boolean isEventOwner = roles.stream().noneMatch(role -> "EVENT_OWNER".equals(role.getName()));
+      boolean isNotEventOwner = roles.stream().noneMatch(role -> "EVENT_OWNER".equals(role.getName()));
 
-      if (isEventOwner) {
+      if (isNotEventOwner) {
         throw new UserIsNotEventOwnerException(ErrorMessages.USER_IS_NOT_EVENT_OWNER);
       }
 
