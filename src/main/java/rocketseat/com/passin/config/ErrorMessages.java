@@ -14,4 +14,7 @@ public class ErrorMessages {
   public static final String USER_NOT_CONFIRMED = "O e-mail deste usuário ainda não foi confirmado. Cheque sua caixa de entrada!";
   public static final String INVALID_PIN_CODE = "Código de confirmação inválido!";
   public static final String SIGNUP_ERROR = "Não foi possível registrar o usuário!";
+  public static final String NO_ROLES_ERROR = "Este usuário não possui papéis atribuídos!";
+  public static final String USER_IS_NOT_EVENT_OWNER = "Este usuário não é um gerente de eventos!";
+  public static final String INVALID_EVENT_CREATION_DATA = "O usuário deve informar: Nome, detalhes, número máximo de participantes, data de início, data de fim e endereço de forma opcional!";
 }

@@ -7,12 +7,15 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import rocketseat.com.passin.domain.event.exceptions.InvalidEventCreationException;
 import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
+import rocketseat.com.passin.domain.role.exceptions.NoRolesException;
 import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
 import rocketseat.com.passin.domain.user.exceptions.SignupException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
+import rocketseat.com.passin.domain.user.exceptions.UserIsNotEventOwnerException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotConfirmedException;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.general.ErrorResponseDTO;
@@ -60,6 +63,18 @@ public class ExceptionEntityHandler {
   }
   @ExceptionHandler(SignupException.class)
   public ResponseEntity<ErrorResponseDTO> handleSignupException(InvalidPinCodeException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(UserIsNotEventOwnerException.class)
+  public ResponseEntity<ErrorResponseDTO> handleUserintNotEventOwnerException(UserIsNotEventOwnerException exception) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(NoRolesException.class)
+  public ResponseEntity<ErrorResponseDTO> handleNoRolesException(NoRolesException exception) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(InvalidEventCreationException.class)
+  public ResponseEntity<ErrorResponseDTO> handleInvalidEventCreationException(InvalidEventCreationException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }
