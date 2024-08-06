@@ -64,6 +64,6 @@ public class Event {
   private Set<User> attendees;
   
   @OneToOne
-  @JoinColumn(name = "address_id", nullable = false)
+  @JoinColumn(name = "address_id", nullable = true)
   private Address address;
 }

@@ -2,6 +2,8 @@ package rocketseat.com.passin.domain.role;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,5 +40,6 @@ public class Role {
     joinColumns = @JoinColumn(name = "role_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id")
   )
+  @JsonIgnore
   private Set<User> users;
 }
