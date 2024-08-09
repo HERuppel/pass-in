@@ -33,7 +33,7 @@ public class UserController {
 
     Integer userId = this.tokenService.extractUserIdFromToken(token);
 
-    UserDetailsDTO userDetailsDTO = this.userService.getUser(userId);
+    UserDetailsDTO userDetailsDTO = this.userService.get(userId);
 
     return ResponseEntity.ok(userDetailsDTO);
   }
