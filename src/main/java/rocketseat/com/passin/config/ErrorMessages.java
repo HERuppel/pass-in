@@ -17,4 +17,6 @@ public class ErrorMessages {
   public static final String NO_ROLES_ERROR = "Este usuário não possui papéis atribuídos!";
   public static final String USER_IS_NOT_EVENT_OWNER = "Este usuário não é um gerente de eventos!";
   public static final String INVALID_EVENT_CREATION_DATA = "O usuário deve informar: Nome, detalhes, número máximo de participantes, data de início, data de fim e endereço de forma opcional. Se informado o endereço deve conter: País, UF, cidade, rua, CEP e, opcionalmente, bairro e complemento.";
+  public static final String INVALID_SIGN_IN_DATA = "Login inválido!";
+  public static final String ACCOUNT_ALREADY_CONFIRMED = "Esta conta já foi confirmada!";
 }

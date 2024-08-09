@@ -11,8 +11,10 @@ import rocketseat.com.passin.domain.event.exceptions.InvalidEventCreationExcepti
 import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
 import rocketseat.com.passin.domain.role.exceptions.NoRolesException;
 import rocketseat.com.passin.domain.user.exceptions.AccessTokenNotFoundException;
+import rocketseat.com.passin.domain.user.exceptions.AccountAlreadyConfirmedException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidPinCodeException;
 import rocketseat.com.passin.domain.user.exceptions.InvalidUserDataException;
+import rocketseat.com.passin.domain.user.exceptions.SignInException;
 import rocketseat.com.passin.domain.user.exceptions.SignupException;
 import rocketseat.com.passin.domain.user.exceptions.UserAlreadyExistsException;
 import rocketseat.com.passin.domain.user.exceptions.UserIsNotEventOwnerException;
@@ -75,6 +77,14 @@ public class ExceptionEntityHandler {
   }
   @ExceptionHandler(InvalidEventCreationException.class)
   public ResponseEntity<ErrorResponseDTO> handleInvalidEventCreationException(InvalidEventCreationException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(SignInException.class)
+  public ResponseEntity<ErrorResponseDTO> handleSignInException(SignInException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(AccountAlreadyConfirmedException.class)
+  public ResponseEntity<ErrorResponseDTO> handleAccountAlreadyConfirmedException(AccountAlreadyConfirmedException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
   }
 }
