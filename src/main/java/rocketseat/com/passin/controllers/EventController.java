@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
-import rocketseat.com.passin.domain.event.exceptions.InvalidEventCreationException;
 import rocketseat.com.passin.domain.role.Role;
 import rocketseat.com.passin.domain.user.exceptions.UserIsNotEventOwnerException;
 import rocketseat.com.passin.dto.event.CreateEventRequestDTO;
 import rocketseat.com.passin.dto.event.EventResponseDTO;
+import rocketseat.com.passin.dto.event.validation.CreateEventRequestValidator;
 import rocketseat.com.passin.services.EventService;
 import rocketseat.com.passin.services.TokenService;
 import rocketseat.com.passin.services.UserService;
@@ -36,8 +36,7 @@ public class EventController {
 
   @PostMapping
   public ResponseEntity<EventResponseDTO> create(@RequestHeader("Authorization") String authorizationHeader, @RequestBody CreateEventRequestDTO body) {
-      if (!body.isValid())
-        throw new InvalidEventCreationException(ErrorMessages.INVALID_EVENT_CREATION_DATA);
+      CreateEventRequestValidator.validate(body);
 
       String token = authorizationHeader.replace("Bearer ", "");
 
