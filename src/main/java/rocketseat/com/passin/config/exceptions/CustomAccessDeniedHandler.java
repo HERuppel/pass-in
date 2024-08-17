@@ -20,6 +20,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-    response.getWriter().write("{\"error\": \"" + ErrorMessages.ACCESS_DENIED + "\"}");
+    response.getWriter().write("{\"message\": \"" + ErrorMessages.ACCESS_DENIED + "\"}");
   }
 }
