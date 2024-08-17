@@ -28,9 +28,12 @@ public class EventService {
   private final UserRepository userRepository;
   @Autowired
   private final AddressRepository addressRepository;
+  @Autowired
+  private final TokenService tokenService;
 
   @Transactional
-  public EventResponseDTO create(CreateEventRequestDTO createEventRequest, Integer ownerId) {
+  public EventResponseDTO create(CreateEventRequestDTO createEventRequest, String token) {
+    Integer ownerId = this.tokenService.extractUserIdFromToken(token);
 
     User owner = this.userRepository.findById(ownerId)
       .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
