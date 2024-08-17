@@ -4,9 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import rocketseat.com.passin.domain.event.exceptions.EventNotFoundException;
 import rocketseat.com.passin.domain.event.exceptions.InvalidEventCreationException;
 import rocketseat.com.passin.domain.mail.exceptions.SendMailException;
 import rocketseat.com.passin.domain.role.exceptions.NoRolesException;
@@ -86,5 +89,17 @@ public class ExceptionEntityHandler {
   @ExceptionHandler(AccountAlreadyConfirmedException.class)
   public ResponseEntity<ErrorResponseDTO> handleAccountAlreadyConfirmedException(AccountAlreadyConfirmedException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(EventNotFoundException.class)
+  public ResponseEntity<ErrorResponseDTO> handleEventNotFoundException(EventNotFoundException exception) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(exception.getMessage()));
+  }
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<ErrorResponseDTO> handleMissingObjectIdentificationForQueryException(MissingServletRequestParameterException exception) {
+    return new ResponseEntity<>(new ErrorResponseDTO(ErrorMessages.MISSING_OBJECT_IDENTIFICATION), HttpStatus.BAD_REQUEST);
+  }
+  @ExceptionHandler(MissingPathVariableException.class)
+  public ResponseEntity<ErrorResponseDTO> handleMissingObjectIdentificationException(MissingPathVariableException exception) {
+    return new ResponseEntity<>(new ErrorResponseDTO(ErrorMessages.MISSING_OBJECT_IDENTIFICATION), HttpStatus.BAD_REQUEST);
   }
 }

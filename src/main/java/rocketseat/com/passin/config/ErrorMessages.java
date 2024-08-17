@@ -21,4 +21,6 @@ public class ErrorMessages {
   public static final String ACCOUNT_ALREADY_CONFIRMED = "Esta conta já foi confirmada!";
   public static final String ACCESS_DENIED = "Você não possui permissão para executar esta ação!";
   public static final String UNAUTHORIZED = "Você não possui autorização para acessar este recurso!";
+  public static final String EVENT_NOT_FOUND = "Evento não encontrado!";
+  public static final String MISSING_OBJECT_IDENTIFICATION = "Identificador não enviado!";
 }
