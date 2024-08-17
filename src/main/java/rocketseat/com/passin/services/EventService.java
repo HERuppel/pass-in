@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.ErrorMessages;
 import rocketseat.com.passin.domain.address.Address;
 import rocketseat.com.passin.domain.event.Event;
+import rocketseat.com.passin.domain.event.exceptions.EventNotFoundException;
 import rocketseat.com.passin.domain.user.User;
 import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.address.AddressRequestDTO;
@@ -45,6 +46,16 @@ public class EventService {
     EventResponseDTO eventCreated = new EventResponseDTO(newEvent, 0);
 
     return eventCreated;
+  }
+
+  @Transactional
+  public EventResponseDTO get(Integer eventId) {
+    Event event = this.eventRepository.findById(eventId)
+      .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
+
+    EventResponseDTO eventResponse = new EventResponseDTO(event, eventId);
+
+    return eventResponse;
   }
 
   private Event convertToEvent(CreateEventRequestDTO createEventRequest, User owner) {

@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/events")
@@ -28,6 +30,13 @@ public class EventController {
     CreateEventRequestValidator.validate(body);
 
     EventResponseDTO eventResponseDTO = this.eventService.create(body, authorizationHeader.replace("Bearer ", ""));
+
+    return ResponseEntity.ok(eventResponseDTO);
+  }
+
+  @GetMapping("/{eventId}")
+  public ResponseEntity<EventResponseDTO> get(@PathVariable Integer eventId) {
+    EventResponseDTO eventResponseDTO = this.eventService.get(eventId);
 
     return ResponseEntity.ok(eventResponseDTO);
   }
