@@ -41,12 +41,15 @@ public class SecurityConfig {
               auth.requestMatchers(HttpMethod.POST, "/auth/confirm-account").permitAll();
               auth.requestMatchers(HttpMethod.GET, "/user").hasAnyRole("USER", "ADMIN");
               auth.requestMatchers(HttpMethod.POST, "/events/**").hasRole("ADMIN");
+              auth.requestMatchers(HttpMethod.PUT, "/events/**").hasRole("ADMIN");
+              auth.requestMatchers(HttpMethod.DELETE, "/events/**").hasRole("ADMIN");
+              auth.requestMatchers(HttpMethod.GET, "/events/**").hasAnyRole("USER", "ADMIN");
               auth.anyRequest().authenticated();
             })
             .exceptionHandling(exceptionHandling -> 
               exceptionHandling
                 .accessDeniedHandler(customAccessDeniedHandler)
-                .authenticationEntryPoint(customAuthenticationEntryPoint)  
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
               )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
