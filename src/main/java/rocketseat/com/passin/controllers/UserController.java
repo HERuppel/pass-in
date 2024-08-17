@@ -29,9 +29,7 @@ public class UserController {
       throw new AccessTokenNotFoundException(ErrorMessages.ACCESS_TOKEN_NOT_FOUND);
     }
 
-    String token = authorizationHeader.replace("Bearer ", "");
-
-    Integer userId = this.tokenService.extractUserIdFromToken(token);
+    Integer userId = this.tokenService.extractUserIdFromToken(authorizationHeader.replace("Bearer ", ""));
 
     UserDetailsDTO userDetailsDTO = this.userService.get(userId);
 
