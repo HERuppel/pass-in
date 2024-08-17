@@ -17,6 +17,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.config.exceptions.CustomAccessDeniedHandler;
+import rocketseat.com.passin.config.exceptions.CustomAuthenticationEntryPoint;
 
 @Configuration
 @EnableMethodSecurity
@@ -27,6 +28,8 @@ public class SecurityConfig {
   SecurityFilter securityFilter;
   @Autowired
   private final CustomAccessDeniedHandler customAccessDeniedHandler;
+  @Autowired
+  private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
@@ -40,7 +43,11 @@ public class SecurityConfig {
               auth.requestMatchers(HttpMethod.POST, "/events/**").hasRole("ADMIN");
               auth.anyRequest().authenticated();
             })
-            .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(customAccessDeniedHandler))
+            .exceptionHandling(exceptionHandling -> 
+              exceptionHandling
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint)  
+              )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
   }

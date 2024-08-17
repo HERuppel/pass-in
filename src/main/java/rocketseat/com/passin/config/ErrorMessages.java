@@ -19,5 +19,6 @@ public class ErrorMessages {
   public static final String INVALID_EVENT_CREATION_DATA = "O usuário deve informar: Nome, detalhes, número máximo de participantes, data de início, data de fim e endereço de forma opcional. Se informado o endereço deve conter: País, UF, cidade, rua, CEP e, opcionalmente, bairro e complemento.";
   public static final String INVALID_SIGN_IN_DATA = "Login inválido!";
   public static final String ACCOUNT_ALREADY_CONFIRMED = "Esta conta já foi confirmada!";
-  public static final String ACCESS_DENIED = "Você não tem permissão para executar esta ação!";
+  public static final String ACCESS_DENIED = "Você não possui permissão para executar esta ação!";
+  public static final String UNAUTHORIZED = "Você não possui autorização para acessar este recurso!";
 }
