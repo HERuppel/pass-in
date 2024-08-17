@@ -4,8 +4,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +42,6 @@ public class AuthService implements UserDetailsService {
   @Lazy
   @Autowired
   private AuthenticationManager authenticationManager;
-  Logger logger = LoggerFactory.getLogger(AuthService.class);
 
   @Transactional
   public UserDetailsDTO createUserAndSendMail(SignUpRequestDTO signUpRequest) {
@@ -68,7 +65,6 @@ public class AuthService implements UserDetailsService {
     var authUser = (User) auth.getPrincipal();
 
     UserDetailsDTO user = this.userService.get(authUser.getId());
-    logger.info(user.toString());
 
     if (user.pinCode() != null) {
       throw new UserNotConfirmedException(ErrorMessages.USER_NOT_CONFIRMED);

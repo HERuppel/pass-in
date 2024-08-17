@@ -16,8 +16,6 @@ import rocketseat.com.passin.dto.auth.validation.SignUpRequestValidator;
 import rocketseat.com.passin.dto.user.UserDetailsDTO;
 import rocketseat.com.passin.services.AuthService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
   @Autowired
   private final AuthService authService;
-  Logger logger = LoggerFactory.getLogger(AuthController.class);
 
   @PostMapping("/signup")
   public ResponseEntity<SignUpResponseDTO> signUp(@RequestBody SignUpRequestDTO body) {

@@ -9,8 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,7 +40,6 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   @Autowired
   private final RoleRepository roleRepository;
-  Logger logger = LoggerFactory.getLogger(UserService.class);
 
   public User create(CreateUserRequestDTO createUserRequest, AddressRequestDTO addressRequest) {
 
