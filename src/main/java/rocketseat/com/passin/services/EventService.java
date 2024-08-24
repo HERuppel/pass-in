@@ -1,8 +1,13 @@
 package rocketseat.com.passin.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -37,7 +42,7 @@ public class EventService {
     Integer ownerId = this.tokenService.extractUserIdFromToken(token);
 
     User owner = this.userRepository.findById(ownerId)
-      .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
+        .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
 
     Event newEvent = convertToEvent(createEventRequest, owner);
 
@@ -51,11 +56,33 @@ public class EventService {
   @Transactional
   public EventResponseDTO get(Integer eventId) {
     Event event = this.eventRepository.findById(eventId)
-      .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
+        .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
 
     EventResponseDTO eventResponse = new EventResponseDTO(event, eventId);
 
     return eventResponse;
+  }
+
+  @Transactional
+  public List<EventResponseDTO> list(Integer page, Integer limit, Integer ownerId) {
+    Integer pageNumber = page != null ? page : 0;
+    Integer limitNumber = limit != null ? limit : 25;
+
+    Pageable pageable = PageRequest.of(pageNumber, limitNumber);
+
+    User owner = ownerId != null ? this.userRepository.findById(ownerId)
+        .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND))
+        : null;
+
+    Page<Event> events = owner != null
+        ? this.eventRepository.findByOwner(pageable, owner)
+        : this.eventRepository.findAll(pageable);
+
+    List<EventResponseDTO> eventsResponse = events.stream()
+        .map(this::convertToDTO)
+        .collect(Collectors.toList());
+
+    return eventsResponse;
   }
 
   private Event convertToEvent(CreateEventRequestDTO createEventRequest, User owner) {
@@ -92,5 +119,9 @@ public class EventService {
     newAddress.setComplement(addressRequest.complement() != null ? addressRequest.complement() : null);
 
     return newAddress;
+  }
+
+  private EventResponseDTO convertToDTO(Event event) {
+    return new EventResponseDTO(event, event.getOwner().getId());
   }
 }
