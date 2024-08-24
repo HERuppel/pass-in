@@ -2,6 +2,7 @@ package rocketseat.com.passin.dto.event;
 
 import lombok.Getter;
 import rocketseat.com.passin.domain.event.Event;
+import rocketseat.com.passin.dto.user.OwnerDetailsDTO;
 
 @Getter()
 public class EventResponseDTO {
@@ -15,7 +16,7 @@ public class EventResponseDTO {
         event.getStartDate(),
         event.getEndDate(),
         event.getCreatedAt(),
-        event.getOwner(),
+        new OwnerDetailsDTO(event.getOwner().getEmail(), event.getOwner().getName()),
         event.getAddress(),
         event.getMaximumAttendees(),
         numberOfAttendees);

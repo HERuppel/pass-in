@@ -3,7 +3,7 @@ package rocketseat.com.passin.dto.event;
 import java.time.LocalDateTime;
 
 import rocketseat.com.passin.domain.address.Address;
-import rocketseat.com.passin.domain.user.User;
+import rocketseat.com.passin.dto.user.OwnerDetailsDTO;
 
 public record EventDetailDTO(
     int id,
@@ -12,7 +12,7 @@ public record EventDetailDTO(
     LocalDateTime startDate,
     LocalDateTime endDate,
     LocalDateTime createdAt,
-    User owner,
+    OwnerDetailsDTO owner,
     Address address,
     Integer maximumAttendees,
     Integer attendeesAmount) {}
