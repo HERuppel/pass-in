@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import rocketseat.com.passin.dto.event.CreateEventRequestDTO;
 import rocketseat.com.passin.dto.event.EventResponseDTO;
+import rocketseat.com.passin.dto.event.UpdateEventRequestDTO;
 import rocketseat.com.passin.dto.event.validation.CreateEventRequestValidator;
 import rocketseat.com.passin.services.EventService;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/events")
@@ -52,4 +55,10 @@ public class EventController {
     return ResponseEntity.ok(eventsResponseDTO);
   }
 
+  @PutMapping("/{eventId}")
+  public ResponseEntity<EventResponseDTO> update(@PathVariable Integer eventId, @RequestBody UpdateEventRequestDTO body) {
+    EventResponseDTO eventResponseDTO = this.eventService.update(eventId, body);
+    
+    return ResponseEntity.ok(eventResponseDTO);
+  }
 }

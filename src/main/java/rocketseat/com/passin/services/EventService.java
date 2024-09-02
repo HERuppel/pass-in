@@ -21,6 +21,7 @@ import rocketseat.com.passin.domain.user.exceptions.UserNotFoundException;
 import rocketseat.com.passin.dto.address.AddressRequestDTO;
 import rocketseat.com.passin.dto.event.CreateEventRequestDTO;
 import rocketseat.com.passin.dto.event.EventResponseDTO;
+import rocketseat.com.passin.dto.event.UpdateEventRequestDTO;
 import rocketseat.com.passin.repositories.AddressRepository;
 import rocketseat.com.passin.repositories.EventRepository;
 import rocketseat.com.passin.repositories.UserRepository;
@@ -85,6 +86,20 @@ public class EventService {
     return eventsResponse;
   }
 
+  @Transactional
+  public EventResponseDTO update(Integer eventId, UpdateEventRequestDTO updateEventRequest) {
+    Event event = this.eventRepository.findById(eventId)
+        .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
+
+    Event updatedEvent = updateEvent(event, updateEventRequest);
+
+    Event savedEvent = this.eventRepository.save(updatedEvent);
+
+    EventResponseDTO eventResponse = new EventResponseDTO(savedEvent, 0); // TODO: number of attendees column
+
+    return eventResponse;
+  }
+
   private Event convertToEvent(CreateEventRequestDTO createEventRequest, User owner) {
     Event newEvent = new Event();
 
@@ -105,6 +120,34 @@ public class EventService {
     });
 
     return newEvent;
+  }
+
+  private Event updateEvent(Event oldEvent, UpdateEventRequestDTO updateEventRequest) {
+    oldEvent.setTitle(updateEventRequest.title());
+    oldEvent.setDetails(updateEventRequest.details());
+    oldEvent.setMaximumAttendees(updateEventRequest.maximumAttendees());
+    oldEvent.setStartDate(updateEventRequest.startDate());
+    oldEvent.setEndDate(updateEventRequest.endDate());
+    oldEvent.setCreatedAt(LocalDateTime.now());
+
+    updateEventRequest.address().ifPresentOrElse(addressRequest -> {
+      Address newAddress = convertToAddress(addressRequest);
+
+      oldEvent.setAddress(newAddress);
+
+      this.addressRepository.save(newAddress);
+    },
+    () -> {
+      Address currentAddress = oldEvent.getAddress();
+
+      if (currentAddress != null) {
+        oldEvent.setAddress(null);
+  
+        this.addressRepository.delete(currentAddress);
+      }
+    });
+
+    return oldEvent;
   }
 
   private Address convertToAddress(AddressRequestDTO addressRequest) {
