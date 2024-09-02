@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.4</version>
+		<version>3.2.9</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>rocketseat.com</groupId>
@@ -91,7 +91,6 @@
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>7.0.0</version>
 				<configuration>
 						<url>jdbc:hsqldb:file:src/main/resources/database/myDb</url>
 						<user>sa</user>
