@@ -100,6 +100,14 @@ public class EventService {
     return eventResponse;
   }
 
+  @Transactional
+  public void delete(Integer eventId) {
+    Event event = this.eventRepository.findById(eventId)
+      .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
+
+    this.eventRepository.delete(event);
+  }
+
   private Event convertToEvent(CreateEventRequestDTO createEventRequest, User owner) {
     Event newEvent = new Event();
 
