@@ -52,8 +52,14 @@ public class Event {
   @Column(name = "end_date")
   private LocalDateTime endDate;
 
+  @Column(name = "number_of_attendees", nullable = false)
+  private Integer numberOfAttendees;
+
   @Column(name = "created_at")
   private LocalDateTime createdAt;
+
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
 
   @ManyToMany
   @JoinTable(

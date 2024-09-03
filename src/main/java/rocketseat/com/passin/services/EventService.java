@@ -49,7 +49,7 @@ public class EventService {
 
     this.eventRepository.save(newEvent);
 
-    EventResponseDTO eventCreated = new EventResponseDTO(newEvent, 0);
+    EventResponseDTO eventCreated = new EventResponseDTO(newEvent);
 
     return eventCreated;
   }
@@ -59,7 +59,7 @@ public class EventService {
     Event event = this.eventRepository.findById(eventId)
         .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
 
-    EventResponseDTO eventResponse = new EventResponseDTO(event, eventId);
+    EventResponseDTO eventResponse = new EventResponseDTO(event);
 
     return eventResponse;
   }
@@ -95,7 +95,7 @@ public class EventService {
 
     Event savedEvent = this.eventRepository.save(updatedEvent);
 
-    EventResponseDTO eventResponse = new EventResponseDTO(savedEvent, 0); // TODO: number of attendees column
+    EventResponseDTO eventResponse = new EventResponseDTO(savedEvent);
 
     return eventResponse;
   }
@@ -106,10 +106,12 @@ public class EventService {
     newEvent.setTitle(createEventRequest.title());
     newEvent.setDetails(createEventRequest.details());
     newEvent.setMaximumAttendees(createEventRequest.maximumAttendees());
+    newEvent.setNumberOfAttendees(0);
     newEvent.setStartDate(createEventRequest.startDate());
     newEvent.setEndDate(createEventRequest.endDate());
     newEvent.setOwner(owner);
     newEvent.setCreatedAt(LocalDateTime.now());
+    newEvent.setUpdatedAt(LocalDateTime.now());
 
     createEventRequest.address().ifPresent(addressRequest -> {
       Address newAddress = convertToAddress(addressRequest);
@@ -128,7 +130,7 @@ public class EventService {
     oldEvent.setMaximumAttendees(updateEventRequest.maximumAttendees());
     oldEvent.setStartDate(updateEventRequest.startDate());
     oldEvent.setEndDate(updateEventRequest.endDate());
-    oldEvent.setCreatedAt(LocalDateTime.now());
+    oldEvent.setUpdatedAt(LocalDateTime.now());
 
     updateEventRequest.address().ifPresentOrElse(addressRequest -> {
       Address newAddress = convertToAddress(addressRequest);
@@ -165,6 +167,6 @@ public class EventService {
   }
 
   private EventResponseDTO convertToDTO(Event event) {
-    return new EventResponseDTO(event, event.getOwner().getId());
+    return new EventResponseDTO(event);
   }
 }

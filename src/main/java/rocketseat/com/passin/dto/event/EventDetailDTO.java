@@ -12,6 +12,7 @@ public record EventDetailDTO(
     LocalDateTime startDate,
     LocalDateTime endDate,
     LocalDateTime createdAt,
+    LocalDateTime updateAt,
     OwnerDetailsDTO owner,
     Address address,
     Integer maximumAttendees,

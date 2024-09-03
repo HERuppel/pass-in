@@ -8,7 +8,7 @@ import rocketseat.com.passin.dto.user.OwnerDetailsDTO;
 public class EventResponseDTO {
   EventDetailDTO event;
 
-  public EventResponseDTO(Event event, Integer numberOfAttendees) {
+  public EventResponseDTO(Event event) {
     this.event = new EventDetailDTO(
         event.getId(),
         event.getTitle(),
@@ -16,9 +16,10 @@ public class EventResponseDTO {
         event.getStartDate(),
         event.getEndDate(),
         event.getCreatedAt(),
+        event.getUpdatedAt(),
         new OwnerDetailsDTO(event.getOwner().getEmail(), event.getOwner().getName()),
         event.getAddress(),
         event.getMaximumAttendees(),
-        numberOfAttendees);
+        event.getNumberOfAttendees());
   }
 }
