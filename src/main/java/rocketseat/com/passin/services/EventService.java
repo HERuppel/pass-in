@@ -65,18 +65,14 @@ public class EventService {
   }
 
   @Transactional
-  public List<EventResponseDTO> list(Integer page, Integer limit, Integer ownerId) {
+  public List<EventResponseDTO> list(Integer page, Integer limit, String title) {
     Integer pageNumber = page != null ? page : 0;
     Integer limitNumber = limit != null ? limit : 25;
 
     Pageable pageable = PageRequest.of(pageNumber, limitNumber);
 
-    User owner = ownerId != null ? this.userRepository.findById(ownerId)
-        .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND))
-        : null;
-
-    Page<Event> events = owner != null
-        ? this.eventRepository.findByOwner(pageable, owner)
+    Page<Event> events = title != null
+        ? this.eventRepository.findByTitleContainingIgnoreCase(pageable, title)
         : this.eventRepository.findAll(pageable);
 
     List<EventResponseDTO> eventsResponse = events.stream()
@@ -103,7 +99,7 @@ public class EventService {
   @Transactional
   public void delete(Integer eventId) {
     Event event = this.eventRepository.findById(eventId)
-      .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
+        .orElseThrow(() -> new EventNotFoundException(ErrorMessages.EVENT_NOT_FOUND));
 
     this.eventRepository.delete(event);
   }
@@ -147,15 +143,15 @@ public class EventService {
 
       this.addressRepository.save(newAddress);
     },
-    () -> {
-      Address currentAddress = oldEvent.getAddress();
+        () -> {
+          Address currentAddress = oldEvent.getAddress();
 
-      if (currentAddress != null) {
-        oldEvent.setAddress(null);
-  
-        this.addressRepository.delete(currentAddress);
-      }
-    });
+          if (currentAddress != null) {
+            oldEvent.setAddress(null);
+
+            this.addressRepository.delete(currentAddress);
+          }
+        });
 
     return oldEvent;
   }

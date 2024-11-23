@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
@@ -50,16 +49,17 @@ public class EventController {
 
   @GetMapping
   public ResponseEntity<List<EventResponseDTO>> list(@RequestParam(required = false) Integer page,
-      @RequestParam(required = false) Integer limit, @RequestParam(required = false) Integer ownerId) {
-    List<EventResponseDTO> eventsResponseDTO = this.eventService.list(page, limit, ownerId);
+      @RequestParam(required = false) Integer limit, @RequestParam(required = false) String title) {
+    List<EventResponseDTO> eventsResponseDTO = this.eventService.list(page, limit, title);
 
     return ResponseEntity.ok(eventsResponseDTO);
   }
 
   @PutMapping("/{eventId}")
-  public ResponseEntity<EventResponseDTO> update(@PathVariable Integer eventId, @RequestBody UpdateEventRequestDTO body) {
+  public ResponseEntity<EventResponseDTO> update(@PathVariable Integer eventId,
+      @RequestBody UpdateEventRequestDTO body) {
     EventResponseDTO eventResponseDTO = this.eventService.update(eventId, body);
-    
+
     return ResponseEntity.ok(eventResponseDTO);
   }
 
